@@ -1,0 +1,58 @@
+namespace Timmer.Api.Domain.User;
+
+using Database;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
+public class UserService(DatabaseContext context) : IUserService {
+	private static PasswordHasher<User> PasswordHasher => new();
+	public DbSet<User> Entities => context.Set<User>();
+
+	public async Task<User?> FindOne(Guid id) => await Entities.FirstOrDefaultAsync(user => user.Id == id);
+
+	public async Task<IEnumerable<User>> FindAll() => await Entities.ToListAsync();
+
+	public async Task<User> Create(User entity) {
+		var hashedPassword = PasswordHasher.HashPassword(entity, entity.PasswordHash);
+		var result = Entities.Add(new User {
+			Id = entity.Id,
+			Name = entity.Name,
+			Email = entity.Email,
+			EmailConfirmed = entity.EmailConfirmed,
+			Role = entity.Role,
+			PasswordHash = hashedPassword
+		});
+		await context.SaveChangesAsync();
+		return result.Entity;
+	}
+
+	public async Task<User> Update(User entity) {
+		var hashedPassword = PasswordHasher.HashPassword(entity, entity.PasswordHash);
+		var user = new User {
+			Id = entity.Id,
+			Name = entity.Name,
+			Email = entity.Email,
+			EmailConfirmed = entity.EmailConfirmed,
+			Role = entity.Role,
+			PasswordHash = hashedPassword
+		};
+		var result = Entities.Update(user);
+		await context.SaveChangesAsync();
+		return result.Entity;
+	}
+
+	public async Task<int> Delete(Guid id) {
+		try {
+			var entity = await FindOne(id);
+			if (entity != null) {
+				Entities.Remove(entity);
+			}
+
+			return await context.SaveChangesAsync();
+		}
+		catch (DbUpdateConcurrencyException e) {
+			Console.WriteLine(e);
+			throw;
+		}
+	}
+}

@@ -1,0 +1,19 @@
+meta {
+  name: Create user
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{hostName}}/{{version}}/user
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "fm39hz",
+    "email": "hitpoint2k3@gmail.com",
+    "password": "D@ylahien2k3"
+  }
+}
