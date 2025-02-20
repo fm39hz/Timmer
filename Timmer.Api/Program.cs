@@ -1,10 +1,8 @@
 namespace Timmer.Api;
 
-using Constant;
+using Configuration;
 using Database;
 using Domain.User;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
 using MySql.EntityFrameworkCore.Extensions;
 
@@ -26,36 +24,13 @@ public static class Program {
 	}
 
 	private static WebApplication Build(WebApplicationBuilder builder) {
-		var userSeed = builder.Configuration.GetSection("UserSeed");
-		var connectionString = builder.Configuration.GetConnectionString("MariaDb")!;
+		var userSeed = new UserSeed(builder);
+		var connectionString = builder.Configuration["ConnectionStrings:MariaDb"]!;
 		builder.Services.AddOpenApi();
-		builder.Services.AddMySQLServer<DatabaseContext>(connectionString, optionsBuilder => {
+		builder.Services.AddMySQLServer<UserContext>(connectionString, optionsBuilder => {
 			optionsBuilder.MigrationsAssembly(typeof(Program).Assembly.FullName);
 		});
-		builder.Services.AddDbContext<DatabaseContext>(optionsBuilder => {
-			optionsBuilder.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
-			optionsBuilder.UseSeeding((context, _) => {
-				var users = context.Set<User>().ToList();
-				var userInfo = new User {
-					Name = userSeed.GetSection("Name").Value!, Email = userSeed.GetSection("Email").Value!
-				};
-				var existedAdmin = users.Count(user =>
-					(user.Role & Roles.Admin) != 0 && user.Email == userInfo.Email && user.Name == userInfo.Name);
-				var passwordHasher = new PasswordHasher<User>();
-				if (existedAdmin > 0) {
-					return;
-				}
-
-				var admin = new User {
-					Name = userInfo.Name,
-					Email = userInfo.Email,
-					Role = Roles.Admin,
-					PasswordHash = passwordHasher.HashPassword(userInfo, userSeed.GetSection("Password").Value!)
-				};
-				context.Set<User>().Add(admin);
-				context.SaveChanges();
-			});
-		});
+		builder.Services.AddUserContext(userSeed);
 		builder.Services.AddLogging();
 		builder.Services.AddEndpointsApiExplorer();
 		builder.Services.AddControllers();

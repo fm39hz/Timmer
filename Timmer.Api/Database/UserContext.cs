@@ -3,8 +3,8 @@ namespace Timmer.Api.Database;
 using Domain.User;
 using Microsoft.EntityFrameworkCore;
 
-public sealed class DatabaseContext : DbContext {
-	public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) {
+public sealed class UserContext : DbContext {
+	public UserContext(DbContextOptions<UserContext> options) : base(options) {
 		Database.EnsureCreated();
 	}
 
