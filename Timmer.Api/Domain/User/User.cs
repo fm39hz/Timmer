@@ -6,9 +6,18 @@ using Constant;
 
 [Table("users")]
 public record User : BaseModel {
+	public User(User user) : base(user) {
+		Id = user.Id;
+		Role = user.Role;
+		Name = user.Name;
+		Email = user.Email;
+		EmailConfirmed = user.EmailConfirmed;
+		PasswordHash = user.PasswordHash;
+	}
+
 	[Column("role")] public Roles Role { get; init; } = Roles.None;
-	[Column("name")] public required string Name { get; init; }
-	[Column("email")] public required string Email { get; init; }
+	[Column("name")] public string Name { get; init; } = string.Empty;
+	[Column("email")] public string Email { get; init; } = string.Empty;
 	[Column("emailConfirmed")] public bool EmailConfirmed { get; init; }
-	[Column("password")] public string PasswordHash { get; init; } = null!;
+	[Column("password")] public string PasswordHash { get; init; } = string.Empty;
 }

@@ -5,14 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("/api/v1/[controller]")]
-public class UserController(IUserService service) : ControllerBase {
-	[HttpGet("")]
-	public async Task<IValueHttpResult<IEnumerable<UserResponseDto>>> FindAll() {
-		var users = await service.FindAll();
-		var dtos = users.Select(user => new UserResponseDto(user)).ToList();
-		return TypedResults.Ok(dtos);
-	}
-
+public class UserController(IUserService service) : ControllerBase, IUserController {
 	[HttpGet("{id:guid}")]
 	public async Task<IValueHttpResult<UserResponseDto>> FindOne(Guid id) {
 		var user = await service.FindOne(id);
@@ -23,13 +16,22 @@ public class UserController(IUserService service) : ControllerBase {
 		return TypedResults.Ok(new UserResponseDto(user));
 	}
 
+	[HttpGet("")]
+	public async Task<IValueHttpResult<IEnumerable<UserResponseDto>>> FindAll() {
+		var users = await service.FindAll();
+		var dtos = users.Select(user => new UserResponseDto(user)).ToList();
+		return TypedResults.Ok(dtos);
+	}
+
 	[HttpPost("")]
-	public async Task<IValueHttpResult<UserResponseDto>> Create([FromBody] UserRequestDto user) {
-		var createdUser = await service.Create(user.ToModel());
+	public async Task<IValueHttpResult<UserResponseDto>> Create([FromBody] UserRequestDto entity) {
+		var createdUser = await service.Create(entity.ToModel());
 		return TypedResults.Created(createdUser.Id.ToString(), new UserResponseDto(createdUser));
 	}
 
-	[HttpPut("")]
-	public async Task<IValueHttpResult<UserResponseDto>> Update([FromBody] User user) =>
-		TypedResults.Ok(new UserResponseDto(await service.Update(user)));
+	[HttpPut("{id:guid}")]
+	public async Task<IValueHttpResult<UserResponseDto>> Update(Guid id, [FromBody] UserRequestDto entity) =>
+		TypedResults.Ok(new UserResponseDto(await service.Update(id, entity.ToModel())));
+
+	public async Task<IValueHttpResult<int>> Delete(Guid id) => TypedResults.Ok(await service.Delete(id));
 }

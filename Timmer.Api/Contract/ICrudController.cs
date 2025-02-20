@@ -1,37 +1,36 @@
 namespace Timmer.Api.Contract;
 
 using Domain.Base;
-using Microsoft.EntityFrameworkCore;
 
 /// <summary>
-///     An interface that declare Crud actions service
+///     An interface that declare Crud actions controller
 /// </summary>
-public interface ICrudService<T> where T : BaseModel {
-	/// <summary>
-	///     Find all entity in database
-	/// </summary>
-	/// <returns></returns>
-	public DbSet<T> Entities { get; }
-
+/// <typeparam name="TModel">Target model of controller</typeparam>
+/// <typeparam name="TResponse">Response dto</typeparam>
+/// <typeparam name="TRequest">Request dto</typeparam>
+public interface ICrudController<TModel, TResponse, in TRequest>
+	where TModel : BaseModel
+	where TResponse : IResponseDto
+	where TRequest : IRequestDto<TModel> {
 	/// <summary>
 	///     Find one entity with id in database
 	/// </summary>
 	/// <param name="id">Id of model</param>
 	/// <returns></returns>
-	public Task<T?> FindOne(Guid id);
+	public Task<IValueHttpResult<TResponse>> FindOne(Guid id);
 
 	/// <summary>
 	///     Find all entity in database
 	/// </summary>
 	/// <returns></returns>
-	public Task<IEnumerable<T>> FindAll();
+	public Task<IValueHttpResult<IEnumerable<TResponse>>> FindAll();
 
 	/// <summary>
 	///     Create new entity in database
 	/// </summary>
 	/// <param name="entity">the entity value</param>
 	/// <returns></returns>
-	public Task<T> Create(T entity);
+	public Task<IValueHttpResult<TResponse>> Create(TRequest entity);
 
 	/// <summary>
 	///     Update one specify entity
@@ -39,12 +38,12 @@ public interface ICrudService<T> where T : BaseModel {
 	/// <param name="id">Id of model</param>
 	/// <param name="entity">the entity value</param>
 	/// <returns></returns>
-	public Task<T> Update(Guid id, T entity);
+	public Task<IValueHttpResult<TResponse>> Update(Guid id, TRequest entity);
 
 	/// <summary>
 	///     Delete one entity that has id
 	/// </summary>
 	/// <param name="id">Id of model</param>
 	/// <returns></returns>
-	public Task<int> Delete(Guid id);
+	public Task<IValueHttpResult<int>> Delete(Guid id);
 }

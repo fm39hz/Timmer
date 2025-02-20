@@ -4,7 +4,7 @@ using Database;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-public class UserService(DatabaseContext context) : IUserService {
+public class UserService(UserContext context) : IUserService {
 	private static PasswordHasher<User> PasswordHasher => new();
 	public DbSet<User> Entities => context.Set<User>();
 
@@ -14,28 +14,14 @@ public class UserService(DatabaseContext context) : IUserService {
 
 	public async Task<User> Create(User entity) {
 		var hashedPassword = PasswordHasher.HashPassword(entity, entity.PasswordHash);
-		var result = Entities.Add(new User {
-			Id = entity.Id,
-			Name = entity.Name,
-			Email = entity.Email,
-			EmailConfirmed = entity.EmailConfirmed,
-			Role = entity.Role,
-			PasswordHash = hashedPassword
-		});
+		var result = Entities.Add(new User(entity) { PasswordHash = hashedPassword });
 		await context.SaveChangesAsync();
 		return result.Entity;
 	}
 
-	public async Task<User> Update(User entity) {
+	public async Task<User> Update(Guid id, User entity) {
 		var hashedPassword = PasswordHasher.HashPassword(entity, entity.PasswordHash);
-		var user = new User {
-			Id = entity.Id,
-			Name = entity.Name,
-			Email = entity.Email,
-			EmailConfirmed = entity.EmailConfirmed,
-			Role = entity.Role,
-			PasswordHash = hashedPassword
-		};
+		var user = new User(entity) { Id = id, PasswordHash = hashedPassword };
 		var result = Entities.Update(user);
 		await context.SaveChangesAsync();
 		return result.Entity;
