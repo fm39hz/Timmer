@@ -4,7 +4,7 @@ using Database;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-public class UserService(UserContext context) : IUserService {
+public sealed class UserService(UserContext context) : IUserService {
 	private static PasswordHasher<User> PasswordHasher => new();
 	public DbSet<User> Entities => context.Set<User>();
 

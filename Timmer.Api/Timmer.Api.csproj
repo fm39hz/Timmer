@@ -32,6 +32,7 @@
 	<ItemGroup>
 		<Folder Include="Domain\Authorization\"/>
 		<Folder Include="Middleware\"/>
+		<Folder Include="Utils\" />
 	</ItemGroup>
 
 </Project>

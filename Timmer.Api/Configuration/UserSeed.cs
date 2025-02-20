@@ -1,6 +1,6 @@
 namespace Timmer.Api.Configuration;
 
-public record UserSeed {
+public sealed record UserSeed {
 	public UserSeed(WebApplicationBuilder builder) {
 		Name = builder.Configuration["UserSeed:Name"]!;
 		Email = builder.Configuration["UserSeed:Email"]!;

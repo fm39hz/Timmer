@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("/api/v1/[controller]")]
-public class UserController(IUserService service) : ControllerBase, IUserController {
+public sealed class UserController(IUserService service) : ControllerBase, IUserController {
 	[HttpGet("{id:guid}")]
 	public async Task<IValueHttpResult<UserResponseDto>> FindOne(Guid id) {
 		var user = await service.FindOne(id);
