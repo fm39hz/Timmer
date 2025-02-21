@@ -14,7 +14,8 @@ public static class Program {
 			app.UseHsts();
 			app.MapOpenApi();
 			app.UseExceptionHandler(new ExceptionHandlerOptions {
-				AllowStatusCode404Response = true, ExceptionHandlingPath = "/error"
+				AllowStatusCode404Response = true,
+				ExceptionHandlingPath = "/error"
 			});
 		}
 
@@ -27,9 +28,8 @@ public static class Program {
 		var userSeed = new UserSeed(builder);
 		var connectionString = builder.Configuration["ConnectionStrings:MariaDb"]!;
 		builder.Services.AddOpenApi();
-		builder.Services.AddMySQLServer<UserContext>(connectionString, optionsBuilder => {
-			optionsBuilder.MigrationsAssembly(typeof(Program).Assembly.FullName);
-		});
+		builder.Services.AddMySQLServer<UserContext>(connectionString, optionsBuilder =>
+				optionsBuilder.MigrationsAssembly(typeof(Program).Assembly.FullName));
 		builder.Services.AddUserContext(userSeed);
 		builder.Services.AddLogging();
 		builder.Services.AddEndpointsApiExplorer();
