@@ -11,13 +11,13 @@ public sealed record User : BaseModel {
 		Role = user.Role;
 		Name = user.Name;
 		Email = user.Email;
-		EmailConfirmed = user.EmailConfirmed;
+		IsVerified = user.IsVerified;
 		PasswordHash = user.PasswordHash;
 	}
 
 	[Column("role")] public Roles Role { get; init; } = Roles.None;
 	[Column("name")] public string Name { get; init; } = string.Empty;
 	[Column("email")] public string Email { get; init; } = string.Empty;
-	[Column("emailConfirmed")] public bool EmailConfirmed { get; init; }
+	[Column("is_verified")] public bool IsVerified { get; init; }
 	[Column("password")] public string PasswordHash { get; init; } = string.Empty;
 }
