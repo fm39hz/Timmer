@@ -7,10 +7,11 @@ public enum Roles {
 	Admin = 2
 }
 
-public static class RolesExtensions {
+public static class RolesFactory {
 	public static Roles ToRole(this string role) {
 		try {
-			return Enum.Parse<Roles>(role, true);
+			Enum.TryParse(role, true, out Roles result);
+			return result;
 		}
 		catch (Exception) {
 			return Roles.None;

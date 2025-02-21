@@ -1,10 +1,9 @@
 namespace Timmer.Api;
 
-using Configuration;
+using Constant;
 using Database;
 using Domain.User;
 using Microsoft.IdentityModel.Tokens;
-using MySql.EntityFrameworkCore.Extensions;
 
 public static class Program {
 	public static void Main(string[] args) {
@@ -14,8 +13,7 @@ public static class Program {
 			app.UseHsts();
 			app.MapOpenApi();
 			app.UseExceptionHandler(new ExceptionHandlerOptions {
-				AllowStatusCode404Response = true,
-				ExceptionHandlingPath = "/error"
+				AllowStatusCode404Response = true, ExceptionHandlingPath = "/error"
 			});
 		}
 
@@ -25,12 +23,8 @@ public static class Program {
 	}
 
 	private static WebApplication Build(WebApplicationBuilder builder) {
-		var userSeed = new UserSeed(builder);
-		var connectionString = builder.Configuration["ConnectionStrings:MariaDb"]!;
 		builder.Services.AddOpenApi();
-		builder.Services.AddMySQLServer<UserContext>(connectionString, optionsBuilder =>
-				optionsBuilder.MigrationsAssembly(typeof(Program).Assembly.FullName));
-		builder.Services.AddUserContext(userSeed);
+		builder.Services.AddUserContext(builder);
 		builder.Services.AddLogging();
 		builder.Services.AddEndpointsApiExplorer();
 		builder.Services.AddControllers();

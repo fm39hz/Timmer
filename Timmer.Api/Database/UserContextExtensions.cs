@@ -5,12 +5,14 @@ using Constant;
 using Domain.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+using MySql.EntityFrameworkCore.Extensions;
 
 public static class UserContextExtensions {
-	public static IServiceCollection AddUserContext(this IServiceCollection service, UserSeed userSeed) {
+	public static IServiceCollection AddUserContext(this IServiceCollection service, WebApplicationBuilder builder) {
+		var connectionString = builder.Configuration["ConnectionStrings:MariaDb"]!;
+		var userSeed = new UserSeed(builder);
+		builder.Services.AddMySQLServer<UserContext>(connectionString);
 		service.AddDbContext<UserContext>(optionsBuilder => {
-			optionsBuilder.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
 			optionsBuilder.UseSeeding((context, _) => {
 				context.Seed(userSeed);
 				context.SaveChanges();
