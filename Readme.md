@@ -10,10 +10,12 @@
 ## Getting started
 
 - Clone repo:
-  ```bash
-  git clone https://github.com:fm39hz/Timmer.git
-  cd Timmer
-  ```
+
+    ```bash
+    git clone https://github.com:fm39hz/Timmer.git
+    cd Timmer
+    ```
+
 - Edit secret in `Timmer.Api/config.json`
 - Expose the secret into assembly: `Timmer.Api/secret_expose.sh`
 - Start project: `dotnet run`
