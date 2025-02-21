@@ -9,11 +9,7 @@ public sealed class UserController(IUserService service) : ControllerBase, IUser
 	[HttpGet("{id:guid}")]
 	public async Task<IValueHttpResult<UserResponseDto>> FindOne(Guid id) {
 		var user = await service.FindOne(id);
-		if (user == null) {
-			return TypedResults.NotFound<UserResponseDto>(null);
-		}
-
-		return TypedResults.Ok(new UserResponseDto(user));
+		return user == null ? TypedResults.NotFound<UserResponseDto>(null) : TypedResults.Ok(new UserResponseDto(user));
 	}
 
 	[HttpGet("")]
@@ -33,5 +29,6 @@ public sealed class UserController(IUserService service) : ControllerBase, IUser
 	public async Task<IValueHttpResult<UserResponseDto>> Update(Guid id, [FromBody] UserRequestDto entity) =>
 		TypedResults.Ok(new UserResponseDto(await service.Update(id, entity.ToModel())));
 
+	[HttpDelete("{id:guid}")]
 	public async Task<IValueHttpResult<int>> Delete(Guid id) => TypedResults.Ok(await service.Delete(id));
 }
