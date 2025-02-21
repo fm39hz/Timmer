@@ -1,9 +1,9 @@
 namespace Timmer.Api;
 
-using Constant;
 using Database;
 using Domain.User;
 using Microsoft.IdentityModel.Tokens;
+using Middleware;
 
 public static class Program {
 	public static void Main(string[] args) {
@@ -18,6 +18,7 @@ public static class Program {
 		}
 
 		app.MapControllers();
+		app.UseLoggerMiddleware();
 		app.UseHttpsRedirection();
 		app.Run();
 	}
@@ -25,7 +26,9 @@ public static class Program {
 	private static WebApplication Build(WebApplicationBuilder builder) {
 		builder.Services.AddOpenApi();
 		builder.Services.AddUserContext(builder);
-		builder.Services.AddLogging();
+		builder.Services.AddLogging(logging => {
+			logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning);
+		});
 		builder.Services.AddEndpointsApiExplorer();
 		builder.Services.AddControllers();
 		builder.Services.AddSwaggerGen();
