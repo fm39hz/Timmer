@@ -9,7 +9,7 @@ using Domain.Base;
 /// <typeparam name="TResponse">Response dto</typeparam>
 /// <typeparam name="TRequest">Request dto</typeparam>
 public interface ICrudController<TModel, TResponse, in TRequest>
-	where TModel : BaseModel
+	where TModel : IModel
 	where TResponse : IResponseDto
 	where TRequest : IRequestDto<TModel> {
 	/// <summary>

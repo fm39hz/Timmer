@@ -2,7 +2,10 @@ namespace Timmer.Api.Domain.Base;
 
 using System.ComponentModel.DataAnnotations.Schema;
 
-public abstract record BaseModel {
+/// <summary>
+/// The base for every Entity in this project
+/// </summary>
+public abstract record BaseModel : IModel {
 	[Column("id")]
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 	public Guid Id { get; init; }
