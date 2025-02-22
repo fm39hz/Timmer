@@ -31,7 +31,7 @@
 
 	<ItemGroup>
 		<Folder Include="Domain\Authorization\"/>
-		<Folder Include="Utils\" />
+		<Folder Include="Utils\"/>
 	</ItemGroup>
 
 </Project>

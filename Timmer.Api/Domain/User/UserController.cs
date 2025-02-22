@@ -9,7 +9,7 @@ public sealed class UserController(IUserService service) : ControllerBase, IUser
 	[HttpGet("{id:guid}")]
 	public async Task<IValueHttpResult<UserResponseDto>> FindOne(Guid id) {
 		var user = await service.FindOne(id);
-		return user == null ? TypedResults.NotFound<UserResponseDto>(null) : TypedResults.Ok(new UserResponseDto(user));
+		return user == null? TypedResults.NotFound<UserResponseDto>(null) : TypedResults.Ok(new UserResponseDto(user));
 	}
 
 	[HttpGet("")]
