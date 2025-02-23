@@ -13,7 +13,8 @@ public static class Program {
 			app.UseHsts();
 			app.MapOpenApi();
 			app.UseExceptionHandler(new ExceptionHandlerOptions {
-				AllowStatusCode404Response = true, ExceptionHandlingPath = "/error"
+				AllowStatusCode404Response = true,
+				ExceptionHandlingPath = "/error"
 			});
 		}
 
@@ -26,9 +27,7 @@ public static class Program {
 	private static WebApplication Build(WebApplicationBuilder builder) {
 		builder.Services.AddOpenApi();
 		builder.Services.AddUserContext(builder);
-		builder.Services.AddLogging(logging => {
-			logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning);
-		});
+		builder.Services.AddLogging(logging => logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning));
 		builder.Services.AddEndpointsApiExplorer();
 		builder.Services.AddControllers();
 		builder.Services.AddSwaggerGen();
