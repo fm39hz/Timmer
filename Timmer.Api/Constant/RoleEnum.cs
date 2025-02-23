@@ -7,6 +7,12 @@ public enum Roles {
 	Admin = 2
 }
 
+public static class RoleValues {
+	public const string None = "None";
+	public const string Admin = "Admin";
+	public const string User = "User";
+}
+
 public static class RolesFactory {
 	public static Roles ToRole(this string role) {
 		try {

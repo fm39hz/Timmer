@@ -12,7 +12,7 @@ public class CrudLoggerMiddleware(RequestDelegate next) {
 		HttpContext context,
 		ILogger<ICrudController<IModel, IResponseDto, IRequestDto<IModel>>> logger) {
 		var message =
-			$"{context.GetEndpoint()?.DisplayName} responded with status code {context.Response.StatusCode}";
+			$"{context.User} responded with status code {context.Response.StatusCode}";
 		RequestReceived(logger, message);
 		await next(context);
 	}

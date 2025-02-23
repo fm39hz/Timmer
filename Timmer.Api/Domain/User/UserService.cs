@@ -10,6 +10,17 @@ public sealed class UserService(UserContext context) : IUserService {
 
 	public async Task<User?> FindOne(Guid id) => await Entities.FirstOrDefaultAsync(user => user.Id == id);
 
+	public async Task<User?> FindOne(string email, string password) {
+		var user = await Entities.FirstOrDefaultAsync(u => u.Email == email);
+
+		if (user == null) {
+			return null;
+		}
+
+		var isPasswordValid = PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
+		return isPasswordValid == PasswordVerificationResult.Failed? null : user;
+	}
+
 	public async Task<IEnumerable<User>> FindAll() => await Entities.ToListAsync();
 
 	public async Task<User> Create(User entity) {

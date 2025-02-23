@@ -1,9 +1,12 @@
 namespace Timmer.Api.Domain.User;
 
+using Constant;
 using Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
+[Authorize(RoleValues.Admin)]
 [Route("/api/v1/[controller]")]
 public sealed class UserController(IUserService service) : ControllerBase, IUserController {
 	[HttpGet("{id:guid}")]
