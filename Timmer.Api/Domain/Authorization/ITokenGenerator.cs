@@ -1,7 +1,8 @@
 namespace Timmer.Api.Domain.Authorization;
 
+using Dto;
 using User;
 
 public interface ITokenGenerator {
-	public string GenerateToken(User user);
+	public TokenDto GenerateToken(User user, bool isRefreshToken = false);
 }

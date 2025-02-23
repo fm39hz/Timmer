@@ -3,12 +3,13 @@ namespace Timmer.Api.Domain.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Configuration;
+using Dto;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Extensions;
 using User;
 
 public class TokenGenerator(IConfiguration configuration) : ITokenGenerator {
-	public string GenerateToken(User user) {
+	private TokenDto GenerateToken(User user, int expiresIn) {
 		var tokenHandler = new JwtSecurityTokenHandler();
 		var jwtConfiguration = new JwtConfiguration(configuration);
 		var claims = new List<Claim> {
@@ -17,9 +18,10 @@ public class TokenGenerator(IConfiguration configuration) : ITokenGenerator {
 			new(JwtRegisteredClaimNames.Email, user.Email),
 			new(ClaimTypes.Role, user.Role.GetDisplayName())
 		};
+		var expiresAt = DateTime.UtcNow.AddDays(expiresIn);
 		var tokenDescriptor = new SecurityTokenDescriptor {
 			Subject = new ClaimsIdentity(claims),
-			Expires = DateTime.UtcNow.AddMinutes(60),
+			Expires = expiresAt,
 			Issuer = jwtConfiguration.ValidIssuer,
 			Audience = jwtConfiguration.ValidAudience,
 			SigningCredentials =
@@ -27,6 +29,8 @@ public class TokenGenerator(IConfiguration configuration) : ITokenGenerator {
 					SecurityAlgorithms.HmacSha256Signature)
 		};
 		var token = tokenHandler.CreateToken(tokenDescriptor);
-		return tokenHandler.WriteToken(token);
+		return new TokenDto(tokenHandler.WriteToken(token), expiresAt);
 	}
+
+	public TokenDto GenerateToken(User user, bool isRefreshToken) => GenerateToken(user, isRefreshToken? 7 : 1);
 }

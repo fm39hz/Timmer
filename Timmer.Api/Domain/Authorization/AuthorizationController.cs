@@ -1,5 +1,6 @@
 namespace Timmer.Api.Domain.Authorization;
 
+using Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,9 @@ public class AuthorizationController(IUserService userService, ITokenGenerator t
 			return TypedResults.Unauthorized();
 		}
 
-		var token = tokenGenerator.GenerateToken(user);
-		return TypedResults.Ok(token);
+		var accessToken = tokenGenerator.GenerateToken(user);
+		var refreshToken = tokenGenerator.GenerateToken(user, true);
+		var response = new LoginResponseDto(accessToken, refreshToken);
+		return TypedResults.Ok(response);
 	}
 }
