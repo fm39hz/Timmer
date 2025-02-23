@@ -1,12 +1,13 @@
 namespace Timmer.Api.Domain.Authorization;
 
 using System.Security.Claims;
+using Configuration;
 using Constant;
 using Microsoft.IdentityModel.Tokens;
 
 public static class AuthorizationBuilder {
 	public static IServiceCollection AddJwt(this IServiceCollection services, IConfiguration configuration) {
-		var key = configuration["Jwt:Secret"]!.Select(Convert.ToByte).ToArray();
+		var jwtConfiguration = new JwtConfiguration(configuration);
 		services.AddSingleton<ITokenGenerator, TokenGenerator>();
 		services.AddAuthorizationBuilder()
 			.AddPolicy(RoleValues.Admin, policy => {
@@ -15,13 +16,13 @@ public static class AuthorizationBuilder {
 		services.AddAuthentication()
 			.AddJwtBearer(opt => {
 				opt.TokenValidationParameters = new TokenValidationParameters {
-					IssuerSigningKey = new SymmetricSecurityKey(key),
+					IssuerSigningKey = new SymmetricSecurityKey(jwtConfiguration.Key),
 					ValidateIssuer = true,
 					ValidateAudience = true,
 					ValidateIssuerSigningKey = true,
 					ValidateLifetime = true,
-					ValidAudience = configuration["Jwt:Audience"]!,
-					ValidIssuer = configuration["Jwt:Issuer"]!
+					ValidAudience = jwtConfiguration.ValidAudience,
+					ValidIssuer = jwtConfiguration.ValidIssuer
 				};
 			});
 		return services;

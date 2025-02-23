@@ -35,7 +35,6 @@ public static class Program {
 		builder.Services.AddControllers();
 		builder.Services.AddSwaggerGen();
 		builder.Services.AddServices();
-		builder.Services.AddAuthorization();
 		builder.Services.AddJwt(builder.Configuration);
 		return builder.Build();
 	}

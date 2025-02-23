@@ -17,9 +17,9 @@ public sealed class UserContext : DbContext {
 
 public static class UserContextExtensions {
 	public static IServiceCollection AddUserContext(this IServiceCollection service, WebApplicationBuilder builder) {
-		var connectionString = builder.Configuration["ConnectionStrings:MariaDb"]!;
-		var userSeed = new UserSeed(builder);
-		builder.Services.AddMySQLServer<UserContext>(connectionString);
+		var mariaDbConfiguration = new MariaDbConfiguration(builder.Configuration);
+		var userSeed = new UserSeedConfiguration(builder.Configuration);
+		builder.Services.AddMySQLServer<UserContext>(mariaDbConfiguration.ConnectionString);
 		service.AddDbContext<UserContext>(optionsBuilder => {
 			optionsBuilder.UseSeeding((context, _) => {
 				context.Seed(userSeed);
@@ -33,9 +33,9 @@ public static class UserContextExtensions {
 		return service;
 	}
 
-	private static void Seed(this DbContext context, UserSeed userSeed) {
+	private static void Seed(this DbContext context, UserSeedConfiguration userSeedConfiguration) {
 		var users = context.Set<User>().ToList();
-		var userInfo = new User { Name = userSeed.Name, Email = userSeed.Email };
+		var userInfo = new User { Name = userSeedConfiguration.Name, Email = userSeedConfiguration.Email };
 		var existedAdmin = users.Count(user =>
 			(user.Role & Roles.Admin) != 0 &&
 			user.Email == userInfo.Email &&
@@ -47,7 +47,7 @@ public static class UserContextExtensions {
 		var passwordHasher = new PasswordHasher<User>();
 
 		var admin = new User(userInfo) {
-			Role = Roles.Admin, PasswordHash = passwordHasher.HashPassword(userInfo, userSeed.Password)
+			Role = Roles.Admin, PasswordHash = passwordHasher.HashPassword(userInfo, userSeedConfiguration.Password)
 		};
 		context.Set<User>().Add(admin);
 	}
