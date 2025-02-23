@@ -3,6 +3,7 @@ namespace Timmer.Api;
 using Database;
 using Domain.Authorization;
 using Domain.Base;
+using Microsoft.OpenApi.Models;
 using Middleware;
 
 public static class Program {
@@ -19,6 +20,7 @@ public static class Program {
 
 		app.MapControllers();
 		app.UseSwagger();
+		app.UseSwaggerUI(opt => opt.SwaggerEndpoint("v1/swagger.json", "Timmer API v1"));
 		app.UseAuthentication();
 		app.UseAuthorization();
 		app.UseLoggerMiddleware();
@@ -33,7 +35,26 @@ public static class Program {
 			logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning));
 		builder.Services.AddEndpointsApiExplorer();
 		builder.Services.AddControllers();
-		builder.Services.AddSwaggerGen();
+		builder.Services.AddMvc();
+		builder.Services.AddSwaggerGen(opt => {
+			opt.SwaggerDoc("v1", new OpenApiInfo { Title = "Timmer API", Version = "v1" });
+			opt.AddSecurityDefinition("bearerAuth",
+				new OpenApiSecurityScheme {
+					Type = SecuritySchemeType.Http,
+					Scheme = "bearer",
+					BearerFormat = "JWT",
+					Name = "Authorization",
+					Description = "JWT Authorization header using the Bearer scheme."
+				});
+			opt.AddSecurityRequirement(new OpenApiSecurityRequirement {
+				{
+					new OpenApiSecurityScheme {
+						Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "bearerAuth" }
+					},
+					Array.Empty<string>()
+				}
+			});
+		});
 		builder.Services.AddServices();
 		builder.Services.AddJwt(builder.Configuration);
 		return builder.Build();

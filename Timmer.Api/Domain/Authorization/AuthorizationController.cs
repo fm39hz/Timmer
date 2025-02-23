@@ -10,7 +10,7 @@ using User;
 public class AuthorizationController(IUserService userService, ITokenGenerator tokenGenerator) : ControllerBase {
 	[AllowAnonymous]
 	[HttpPost("login")]
-	public async Task<IResult> Login(LoginRequest request) {
+	public async Task<IResult> Login([FromBody] LoginRequest request) {
 		var user = await userService.FindOne(request.Email, request.Password);
 		if (user == null) {
 			return TypedResults.Unauthorized();
