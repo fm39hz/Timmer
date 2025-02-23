@@ -3,7 +3,6 @@ namespace Timmer.Api.Domain.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Configuration;
-using Constant;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Extensions;
 using User;
