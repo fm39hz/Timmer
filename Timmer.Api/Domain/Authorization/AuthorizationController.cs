@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using User;
 
 [ApiController]
-[Route(Route.DEFAULT_ROUTE)]
+[Route(RouteConstant.DEFAULT_ROUTE)]
 public class AuthorizationController(IUserService userService, ITokenGenerator tokenGenerator) : ControllerBase {
 	[AllowAnonymous]
 	[HttpPost("login")]

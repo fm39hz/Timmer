@@ -10,13 +10,13 @@ public static class AuthorizationBuilder {
 		var jwtConfiguration = new JwtConfiguration(configuration);
 		services.AddSingleton<ITokenGenerator, TokenGenerator>();
 		services.AddAuthorizationBuilder()
-			.AddPolicy(RoleValues.ADMIN, policy => {
-				policy.RequireClaim(ClaimTypes.Role, RoleValues.ADMIN);
-				policy.RequireRole(RoleValues.ADMIN);
+			.AddPolicy(RoleConstant.ADMIN, policy => {
+				policy.RequireClaim(ClaimTypes.Role, RoleConstant.ADMIN);
+				policy.RequireRole(RoleConstant.ADMIN);
 			})
-			.AddPolicy(RoleValues.USER, policy => {
-				policy.RequireClaim(ClaimTypes.Role, RoleValues.USER);
-				policy.RequireRole(RoleValues.USER);
+			.AddPolicy(RoleConstant.USER, policy => {
+				policy.RequireClaim(ClaimTypes.Role, RoleConstant.USER);
+				policy.RequireRole(RoleConstant.USER);
 			});
 		services.AddAuthentication()
 			.AddJwtBearer(opt => opt.TokenValidationParameters = new TokenValidationParameters {

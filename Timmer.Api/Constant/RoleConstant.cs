@@ -7,7 +7,7 @@ public enum Roles {
 	Admin = 2
 }
 
-public static class RoleValues {
+public static class RoleConstant {
 	public const string NONE = "None";
 	public const string ADMIN = "Admin";
 	public const string USER = "User";

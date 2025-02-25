@@ -1,6 +1,7 @@
 namespace Timmer.Api;
 
 using Database;
+using Constant;
 using Domain.Authorization;
 using Domain.Base;
 using Microsoft.OpenApi.Models;
@@ -21,7 +22,7 @@ public static class Program {
 
 		app.MapControllers();
 		app.UseSwagger();
-		app.UseSwaggerUI(static opt => opt.SwaggerEndpoint("v1/swagger.json", "Timmer API v1"));
+		app.UseSwaggerUI();
 		app.UseAuthentication();
 		app.UseAuthorization();
 		app.UseLoggerMiddleware();
@@ -38,7 +39,7 @@ public static class Program {
 		builder.Services.AddControllers();
 		builder.Services.AddMvc();
 		builder.Services.AddSwaggerGen(static opt => {
-			opt.SwaggerDoc("v1", new OpenApiInfo { Title = "Timmer API", Version = "v1" });
+			opt.SwaggerDoc(RouteConstant.VERSION, new OpenApiInfo { Title = "Timmer API", Version = RouteConstant.VERSION });
 			opt.AddSecurityDefinition("bearerAuth",
 				new OpenApiSecurityScheme {
 					Type = SecuritySchemeType.Http,
