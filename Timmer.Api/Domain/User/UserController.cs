@@ -40,6 +40,7 @@ public sealed class UserController(IUserService service) : ControllerBase, IUser
 		if (!ValidateScope(id)) {
 			return TypedResults.BadRequest<UserResponseDto>(null);
 		}
+
 		return TypedResults.Ok(new UserResponseDto(await service.Update(id, entity.ToModel())));
 	}
 

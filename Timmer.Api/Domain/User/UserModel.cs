@@ -1,9 +1,9 @@
 namespace Timmer.Api.Domain.User;
 
-using Base;
-using UserTask;
-using Constant;
 using System.ComponentModel.DataAnnotations.Schema;
+using Base;
+using Constant;
+using UserTask;
 
 public sealed record UserModel : BaseModel {
 	public UserModel(UserModel user) : base(user) {
@@ -21,6 +21,6 @@ public sealed record UserModel : BaseModel {
 	public string Email { get; init; } = string.Empty;
 	public bool IsVerified { get; init; }
 	public string PasswordHash { get; init; } = string.Empty;
-	[InverseProperty("user")]
-	public ICollection<UserTaskModel> Tasks { get; init; } = [];
+
+	[InverseProperty("user")] public ICollection<UserTaskModel> Tasks { get; init; } = [];
 }

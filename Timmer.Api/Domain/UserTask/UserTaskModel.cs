@@ -1,9 +1,9 @@
 namespace Timmer.Api.Domain.UserTask;
 
-using Base;
-using User;
-using Constant;
 using System.ComponentModel.DataAnnotations.Schema;
+using Base;
+using Constant;
+using User;
 
 public sealed record UserTaskModel : BaseModel {
 	public UserTaskModel(UserTaskModel task) : base(task) {
@@ -21,6 +21,6 @@ public sealed record UserTaskModel : BaseModel {
 	public DateTimeOffset StartTime { get; init; }
 	public DateTimeOffset EndTime { get; init; }
 	public TaskStatus Status { get; init; }
-	[ForeignKey("user_id")]
-	public UserModel User { get; init; } = null!;
+
+	[ForeignKey("user_id")] public UserModel User { get; init; } = null!;
 }

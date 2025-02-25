@@ -7,7 +7,7 @@ using Domain.UserTask;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MySql.EntityFrameworkCore.Extensions;
-using Timmer.Api.Utils;
+using Utils;
 
 public sealed class UserContext : DbContext {
 	public UserContext(DbContextOptions<UserContext> options) : base(options) {
@@ -16,6 +16,7 @@ public sealed class UserContext : DbContext {
 
 	private DbSet<UserModel> Users { get; set; } = null!;
 	private DbSet<UserTaskModel> Tasks { get; set; } = null!;
+
 	protected override void OnModelCreating(ModelBuilder modelBuilder) {
 		base.OnModelCreating(modelBuilder);
 
@@ -68,13 +69,10 @@ public static class UserContextExtensions {
 		var passwordHasher = new PasswordHasher<UserModel>();
 
 		var admin = new UserModel(adminIndo) {
-			Role = Roles.Admin,
-			PasswordHash = passwordHasher.HashPassword(adminIndo, userSeedConfiguration.Password)
+			Role = Roles.Admin, PasswordHash = passwordHasher.HashPassword(adminIndo, userSeedConfiguration.Password)
 		};
 		context.Set<UserTaskModel>().Add(new UserTaskModel {
-			User = admin,
-			Name = "Test Task",
-			Description = "Declare Task",
+			User = admin, Name = "Test Task", Description = "Declare Task"
 		});
 		context.Set<UserModel>().Add(admin);
 		var userCount = users.Count;

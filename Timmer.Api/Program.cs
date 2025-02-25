@@ -1,7 +1,7 @@
 namespace Timmer.Api;
 
-using Database;
 using Constant;
+using Database;
 using Domain.Authorization;
 using Domain.Base;
 using Microsoft.OpenApi.Models;
@@ -15,8 +15,7 @@ public static class Program {
 			app.UseHsts();
 			app.MapOpenApi();
 			app.UseExceptionHandler(new ExceptionHandlerOptions {
-				AllowStatusCode404Response = true,
-				ExceptionHandlingPath = "/error"
+				AllowStatusCode404Response = true, ExceptionHandlingPath = "/error"
 			});
 		}
 
@@ -32,14 +31,19 @@ public static class Program {
 
 	private static WebApplication Build(WebApplicationBuilder builder) {
 		builder.Services.AddOpenApi();
-		builder.Services.AddLogging(static logging =>
-			logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning));
+		builder.Services.AddLogging(static logging => logging.AddFilter(
+				"Microsoft.EntityFrameworkCore.Database.Command",
+				LogLevel.Warning)
+			);
 		builder.Services.AddUserContext(builder);
 		builder.Services.AddEndpointsApiExplorer();
 		builder.Services.AddControllers();
 		builder.Services.AddMvc();
 		builder.Services.AddSwaggerGen(static opt => {
-			opt.SwaggerDoc(RouteConstant.VERSION, new OpenApiInfo { Title = "Timmer API", Version = RouteConstant.VERSION });
+			opt.SwaggerDoc(
+				RouteConstant.VERSION,
+				new OpenApiInfo { Title = "Timmer API", Version = RouteConstant.VERSION }
+				);
 			opt.AddSecurityDefinition("bearerAuth",
 				new OpenApiSecurityScheme {
 					Type = SecuritySchemeType.Http,
