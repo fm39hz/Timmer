@@ -1,5 +1,6 @@
 namespace Timmer.Api.Domain.User;
 
+using System.Security.Claims;
 using Constant;
 using Dto;
 using Microsoft.AspNetCore.Authorization;
@@ -10,9 +11,14 @@ using Microsoft.AspNetCore.Mvc;
 [Route(RouteConstant.CONTROLLER)]
 public sealed class UserController(IUserService service) : ControllerBase, IUserController {
 	[HttpGet("{id:guid}")]
+	[Authorize(RoleConstant.USER)]
 	public async Task<IValueHttpResult<UserResponseDto>> FindOne(Guid id) {
+		if (!ValidateScope(id)) {
+			return TypedResults.BadRequest<UserResponseDto>(null);
+		}
+
 		var user = await service.FindOne(id);
-		return user == null ? TypedResults.NotFound<UserResponseDto>(null) : TypedResults.Ok(new UserResponseDto(user));
+		return user == null? TypedResults.NotFound<UserResponseDto>(null) : TypedResults.Ok(new UserResponseDto(user));
 	}
 
 	[HttpGet("")]
@@ -29,9 +35,26 @@ public sealed class UserController(IUserService service) : ControllerBase, IUser
 	}
 
 	[HttpPut("{id:guid}")]
-	public async Task<IValueHttpResult<UserResponseDto>> Update(Guid id, [FromBody] UserRequestDto entity) =>
-		TypedResults.Ok(new UserResponseDto(await service.Update(id, entity.ToModel())));
+	[Authorize(RoleConstant.USER)]
+	public async Task<IValueHttpResult<UserResponseDto>> Update(Guid id, [FromBody] UserRequestDto entity) {
+		if (!ValidateScope(id)) {
+			return TypedResults.BadRequest<UserResponseDto>(null);
+		}
+		return TypedResults.Ok(new UserResponseDto(await service.Update(id, entity.ToModel())));
+	}
 
 	[HttpDelete("{id:guid}")]
-	public async Task<IValueHttpResult<int>> Delete(Guid id) => TypedResults.Ok(await service.Delete(id));
+	public async Task<IValueHttpResult<int>> Delete(Guid id) {
+		if (!ValidateScope(id)) {
+			return TypedResults.BadRequest(-1);
+		}
+
+		return TypedResults.Ok(await service.Delete(id));
+	}
+
+	public bool ValidateScope(Guid id) {
+		var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+		var role = User.FindFirst(ClaimTypes.Role)!.Value;
+		return userId == id || role == RoleConstant.ADMIN;
+	}
 }
