@@ -11,6 +11,7 @@ using Timmer.Api.Utils;
 
 public sealed class UserContext : DbContext {
 	public UserContext(DbContextOptions<UserContext> options) : base(options) {
+		Database.EnsureDeleted();
 		Database.EnsureCreated();
 	}
 
@@ -56,20 +57,20 @@ public static class UserContextExtensions {
 
 	private static void Seed(this DbContext context, UserSeedConfiguration userSeedConfiguration) {
 		var users = context.Set<UserModel>().ToList();
-		var userInfo = new UserModel { Name = userSeedConfiguration.Name, Email = userSeedConfiguration.Email };
+		var adminIndo = new UserModel { Name = userSeedConfiguration.Name, Email = userSeedConfiguration.Email };
 		var existedAdmin = users.Count(user =>
 			(user.Role & Roles.Admin) != 0 &&
-			user.Email == userInfo.Email &&
-			user.Name == userInfo.Name);
+			user.Email == adminIndo.Email &&
+			user.Name == adminIndo.Name);
 		if (existedAdmin > 0) {
 			return;
 		}
 
 		var passwordHasher = new PasswordHasher<UserModel>();
 
-		var admin = new UserModel(userInfo) {
+		var admin = new UserModel(adminIndo) {
 			Role = Roles.Admin,
-			PasswordHash = passwordHasher.HashPassword(userInfo, userSeedConfiguration.Password)
+			PasswordHash = passwordHasher.HashPassword(adminIndo, userSeedConfiguration.Password)
 		};
 		context.Set<UserTaskModel>().Add(new UserTaskModel {
 			User = admin,
@@ -77,5 +78,15 @@ public static class UserContextExtensions {
 			Description = "Declare Task",
 		});
 		context.Set<UserModel>().Add(admin);
+		if (users.Count < 20) {
+			for (var i = 0; i < 50; i++) {
+				var userInfo = UserDataGenerator.Generate();
+				var user = new UserModel(userInfo) {
+					PasswordHash = passwordHasher.HashPassword(userInfo, userInfo.PasswordHash)
+				};
+				context.Set<UserTaskModel>().Add(UserTaskDataGenerator.Generate(user));
+				context.Set<UserModel>().Add(user);
+			}
+		}
 	}
 }
