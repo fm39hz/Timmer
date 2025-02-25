@@ -11,7 +11,6 @@ using Timmer.Api.Utils;
 
 public sealed class UserContext : DbContext {
 	public UserContext(DbContextOptions<UserContext> options) : base(options) {
-		Database.EnsureDeleted();
 		Database.EnsureCreated();
 	}
 
@@ -78,8 +77,9 @@ public static class UserContextExtensions {
 			Description = "Declare Task",
 		});
 		context.Set<UserModel>().Add(admin);
-		if (users.Count < 20) {
-			for (var i = 0; i < 50; i++) {
+		var userCount = users.Count;
+		if (userCount < 50) {
+			for (var i = 0; i < 50 - userCount; i++) {
 				var userInfo = UserDataGenerator.Generate();
 				var user = new UserModel(userInfo) {
 					PasswordHash = passwordHasher.HashPassword(userInfo, userInfo.PasswordHash)
