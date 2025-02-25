@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Authorize(RoleConstant.ADMIN)]
-[Route(RouteConstant.DEFAULT_ROUTE)]
+[Route(RouteConstant.CONTROLLER)]
 public sealed class UserController(IUserService service) : ControllerBase, IUserController {
 	[HttpGet("{id:guid}")]
 	public async Task<IValueHttpResult<UserResponseDto>> FindOne(Guid id) {
