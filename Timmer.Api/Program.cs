@@ -32,9 +32,9 @@ public static class Program {
 
 	private static WebApplication Build(WebApplicationBuilder builder) {
 		builder.Services.AddOpenApi();
-		builder.Services.AddUserContext(builder);
 		builder.Services.AddLogging(static logging =>
 			logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning));
+		builder.Services.AddUserContext(builder);
 		builder.Services.AddEndpointsApiExplorer();
 		builder.Services.AddControllers();
 		builder.Services.AddMvc();
