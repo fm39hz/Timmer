@@ -7,6 +7,7 @@ using Domain.UserTask;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MySql.EntityFrameworkCore.Extensions;
+using Timmer.Api.Utils;
 
 public sealed class UserContext : DbContext {
 	public UserContext(DbContextOptions<UserContext> options) : base(options) {
@@ -15,6 +16,24 @@ public sealed class UserContext : DbContext {
 
 	private DbSet<UserModel> Users { get; set; } = null!;
 	private DbSet<UserTaskModel> Tasks { get; set; } = null!;
+	protected override void OnModelCreating(ModelBuilder modelBuilder) {
+		base.OnModelCreating(modelBuilder);
+
+		foreach (var entity in modelBuilder.Model.GetEntityTypes()) {
+			var typeName = entity.ClrType.Name;
+			if (typeName.EndsWith("Model")) {
+				typeName = typeName[..^5];
+			}
+
+			var tableName = Converter.ToSnakeCase(typeName) + "s";
+			entity.SetTableName(tableName);
+
+			foreach (var property in entity.GetProperties()) {
+				var columnName = Converter.ToSnakeCase(property.Name);
+				property.SetColumnName(columnName);
+			}
+		}
+	}
 }
 
 public static class UserContextExtensions {

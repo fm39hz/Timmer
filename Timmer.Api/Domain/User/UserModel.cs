@@ -5,7 +5,6 @@ using UserTask;
 using Constant;
 using System.ComponentModel.DataAnnotations.Schema;
 
-[Table("users")]
 public sealed record UserModel : BaseModel {
 	public UserModel(UserModel user) : base(user) {
 		Id = user.Id;
@@ -17,10 +16,11 @@ public sealed record UserModel : BaseModel {
 		Tasks = user.Tasks;
 	}
 
-	[Column("role")] public Roles Role { get; init; } = Roles.None;
-	[Column("name")] public string Name { get; init; } = string.Empty;
-	[Column("email")] public string Email { get; init; } = string.Empty;
-	[Column("is_verified")] public bool IsVerified { get; init; }
-	[Column("password")] public string PasswordHash { get; init; } = string.Empty;
-	[InverseProperty("user")] public ICollection<UserTaskModel> Tasks { get; init; } = [];
+	public Roles Role { get; init; } = Roles.None;
+	public string Name { get; init; } = string.Empty;
+	public string Email { get; init; } = string.Empty;
+	public bool IsVerified { get; init; }
+	public string PasswordHash { get; init; } = string.Empty;
+	[InverseProperty("user")]
+	public ICollection<UserTaskModel> Tasks { get; init; } = [];
 }
