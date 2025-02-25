@@ -8,9 +8,9 @@ public enum Roles {
 }
 
 public static class RoleValues {
-	public const string None = "None";
-	public const string Admin = "Admin";
-	public const string User = "User";
+	public const string NONE = "None";
+	public const string ADMIN = "Admin";
+	public const string USER = "User";
 }
 
 public static class RolesFactory {

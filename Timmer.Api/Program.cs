@@ -14,13 +14,14 @@ public static class Program {
 			app.UseHsts();
 			app.MapOpenApi();
 			app.UseExceptionHandler(new ExceptionHandlerOptions {
-				AllowStatusCode404Response = true, ExceptionHandlingPath = "/error"
+				AllowStatusCode404Response = true,
+				ExceptionHandlingPath = "/error"
 			});
 		}
 
 		app.MapControllers();
 		app.UseSwagger();
-		app.UseSwaggerUI(opt => opt.SwaggerEndpoint("v1/swagger.json", "Timmer API v1"));
+		app.UseSwaggerUI(static opt => opt.SwaggerEndpoint("v1/swagger.json", "Timmer API v1"));
 		app.UseAuthentication();
 		app.UseAuthorization();
 		app.UseLoggerMiddleware();
@@ -31,12 +32,12 @@ public static class Program {
 	private static WebApplication Build(WebApplicationBuilder builder) {
 		builder.Services.AddOpenApi();
 		builder.Services.AddUserContext(builder);
-		builder.Services.AddLogging(logging =>
+		builder.Services.AddLogging(static logging =>
 			logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning));
 		builder.Services.AddEndpointsApiExplorer();
 		builder.Services.AddControllers();
 		builder.Services.AddMvc();
-		builder.Services.AddSwaggerGen(opt => {
+		builder.Services.AddSwaggerGen(static opt => {
 			opt.SwaggerDoc("v1", new OpenApiInfo { Title = "Timmer API", Version = "v1" });
 			opt.AddSecurityDefinition("bearerAuth",
 				new OpenApiSecurityScheme {

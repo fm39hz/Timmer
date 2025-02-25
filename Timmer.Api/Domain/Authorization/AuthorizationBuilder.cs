@@ -10,20 +10,23 @@ public static class AuthorizationBuilder {
 		var jwtConfiguration = new JwtConfiguration(configuration);
 		services.AddSingleton<ITokenGenerator, TokenGenerator>();
 		services.AddAuthorizationBuilder()
-			.AddPolicy(RoleValues.Admin, policy => {
-				policy.RequireClaim(ClaimTypes.Role, RoleValues.Admin);
+			.AddPolicy(RoleValues.ADMIN, policy => {
+				policy.RequireClaim(ClaimTypes.Role, RoleValues.ADMIN);
+				policy.RequireRole(RoleValues.ADMIN);
+			})
+			.AddPolicy(RoleValues.USER, policy => {
+				policy.RequireClaim(ClaimTypes.Role, RoleValues.USER);
+				policy.RequireRole(RoleValues.USER);
 			});
 		services.AddAuthentication()
-			.AddJwtBearer(opt => {
-				opt.TokenValidationParameters = new TokenValidationParameters {
-					IssuerSigningKey = new SymmetricSecurityKey(jwtConfiguration.Key),
-					ValidateIssuer = true,
-					ValidateAudience = true,
-					ValidateIssuerSigningKey = true,
-					ValidateLifetime = true,
-					ValidAudience = jwtConfiguration.ValidAudience,
-					ValidIssuer = jwtConfiguration.ValidIssuer
-				};
+			.AddJwtBearer(opt => opt.TokenValidationParameters = new TokenValidationParameters {
+				IssuerSigningKey = new SymmetricSecurityKey(jwtConfiguration.Key),
+				ValidateIssuer = true,
+				ValidateAudience = true,
+				ValidateIssuerSigningKey = true,
+				ValidateLifetime = true,
+				ValidAudience = jwtConfiguration.ValidAudience,
+				ValidIssuer = jwtConfiguration.ValidIssuer
 			});
 		return services;
 	}
