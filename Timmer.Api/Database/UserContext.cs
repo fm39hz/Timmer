@@ -3,6 +3,7 @@ namespace Timmer.Api.Database;
 using Configuration;
 using Constant;
 using Domain.User;
+using Domain.UserTask;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MySql.EntityFrameworkCore.Extensions;
@@ -13,6 +14,7 @@ public sealed class UserContext : DbContext {
 	}
 
 	private DbSet<UserModel> Users { get; set; } = null!;
+	private DbSet<UserTaskModel> Tasks { get; set; } = null!;
 }
 
 public static class UserContextExtensions {
@@ -50,6 +52,11 @@ public static class UserContextExtensions {
 			Role = Roles.Admin,
 			PasswordHash = passwordHasher.HashPassword(userInfo, userSeedConfiguration.Password)
 		};
+		context.Set<UserTaskModel>().Add(new UserTaskModel {
+			User = admin,
+			Name = "Test Task",
+			Description = "Declare Task",
+		});
 		context.Set<UserModel>().Add(admin);
 	}
 }
