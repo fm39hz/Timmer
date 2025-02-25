@@ -5,8 +5,8 @@ using Base;
 using Constant;
 
 [Table("users")]
-public sealed record User : BaseModel {
-	public User(User user) : base(user) {
+public sealed record UserModel : BaseModel {
+	public UserModel(UserModel user) : base(user) {
 		Id = user.Id;
 		Role = user.Role;
 		Name = user.Name;

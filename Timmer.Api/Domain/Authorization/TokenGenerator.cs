@@ -9,7 +9,7 @@ using Microsoft.OpenApi.Extensions;
 using User;
 
 public class TokenGenerator(IConfiguration configuration) : ITokenGenerator {
-	private TokenDto GenerateToken(User user, int expiresIn) {
+	private TokenDto GenerateToken(UserModel user, int expiresIn) {
 		var tokenHandler = new JwtSecurityTokenHandler();
 		var jwtConfiguration = new JwtConfiguration(configuration);
 		var claims = new List<Claim> {
@@ -32,5 +32,5 @@ public class TokenGenerator(IConfiguration configuration) : ITokenGenerator {
 		return new TokenDto(tokenHandler.WriteToken(token), expiresAt);
 	}
 
-	public TokenDto GenerateToken(User user, bool isRefreshToken) => GenerateToken(user, isRefreshToken? 7 : 1);
+	public TokenDto GenerateToken(UserModel user, bool isRefreshToken) => GenerateToken(user, isRefreshToken ? 7 : 1);
 }

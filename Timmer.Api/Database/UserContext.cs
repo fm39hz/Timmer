@@ -12,7 +12,7 @@ public sealed class UserContext : DbContext {
 		Database.EnsureCreated();
 	}
 
-	private DbSet<User> Users { get; set; } = null!;
+	private DbSet<UserModel> Users { get; set; } = null!;
 }
 
 public static class UserContextExtensions {
@@ -34,8 +34,8 @@ public static class UserContextExtensions {
 	}
 
 	private static void Seed(this DbContext context, UserSeedConfiguration userSeedConfiguration) {
-		var users = context.Set<User>().ToList();
-		var userInfo = new User { Name = userSeedConfiguration.Name, Email = userSeedConfiguration.Email };
+		var users = context.Set<UserModel>().ToList();
+		var userInfo = new UserModel { Name = userSeedConfiguration.Name, Email = userSeedConfiguration.Email };
 		var existedAdmin = users.Count(user =>
 			(user.Role & Roles.Admin) != 0 &&
 			user.Email == userInfo.Email &&
@@ -44,11 +44,12 @@ public static class UserContextExtensions {
 			return;
 		}
 
-		var passwordHasher = new PasswordHasher<User>();
+		var passwordHasher = new PasswordHasher<UserModel>();
 
-		var admin = new User(userInfo) {
-			Role = Roles.Admin, PasswordHash = passwordHasher.HashPassword(userInfo, userSeedConfiguration.Password)
+		var admin = new UserModel(userInfo) {
+			Role = Roles.Admin,
+			PasswordHash = passwordHasher.HashPassword(userInfo, userSeedConfiguration.Password)
 		};
-		context.Set<User>().Add(admin);
+		context.Set<UserModel>().Add(admin);
 	}
 }

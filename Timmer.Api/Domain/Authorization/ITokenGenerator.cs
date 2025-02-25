@@ -4,5 +4,5 @@ using Dto;
 using User;
 
 public interface ITokenGenerator {
-	public TokenDto GenerateToken(User user, bool isRefreshToken = false);
+	public TokenDto GenerateToken(UserModel user, bool isRefreshToken = false);
 }

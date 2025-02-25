@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 public sealed class UserService(UserContext context) : IUserService {
-	private static PasswordHasher<User> PasswordHasher => new();
-	public DbSet<User> Entities => context.Set<User>();
+	private static PasswordHasher<UserModel> PasswordHasher => new();
+	public DbSet<UserModel> Entities => context.Set<UserModel>();
 
-	public async Task<User?> FindOne(Guid id) => await Entities.FirstOrDefaultAsync(user => user.Id == id);
+	public async Task<UserModel?> FindOne(Guid id) => await Entities.FirstOrDefaultAsync(user => user.Id == id);
 
-	public async Task<User?> FindOne(string email, string password) {
+	public async Task<UserModel?> FindOne(string email, string password) {
 		var user = await Entities.FirstOrDefaultAsync(u => u.Email == email);
 
 		if (user == null) {
@@ -18,21 +18,21 @@ public sealed class UserService(UserContext context) : IUserService {
 		}
 
 		var isPasswordValid = PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
-		return isPasswordValid == PasswordVerificationResult.Failed? null : user;
+		return isPasswordValid == PasswordVerificationResult.Failed ? null : user;
 	}
 
-	public async Task<IEnumerable<User>> FindAll() => await Entities.ToListAsync();
+	public async Task<IEnumerable<UserModel>> FindAll() => await Entities.ToListAsync();
 
-	public async Task<User> Create(User entity) {
+	public async Task<UserModel> Create(UserModel entity) {
 		var hashedPassword = PasswordHasher.HashPassword(entity, entity.PasswordHash);
-		var result = Entities.Add(new User(entity) { PasswordHash = hashedPassword });
+		var result = Entities.Add(new UserModel(entity) { PasswordHash = hashedPassword });
 		await context.SaveChangesAsync();
 		return result.Entity;
 	}
 
-	public async Task<User> Update(Guid id, User entity) {
+	public async Task<UserModel> Update(Guid id, UserModel entity) {
 		var hashedPassword = PasswordHasher.HashPassword(entity, entity.PasswordHash);
-		var user = new User(entity) { Id = id, PasswordHash = hashedPassword };
+		var user = new UserModel(entity) { Id = id, PasswordHash = hashedPassword };
 		var result = Entities.Update(user);
 		await context.SaveChangesAsync();
 		return result.Entity;
