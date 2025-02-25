@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Authorize(RoleValues.Admin)]
-[Route("/api/v1/[controller]")]
+[Authorize(RoleValues.ADMIN)]
+[Route(Route.DEFAULT_ROUTE)]
 public sealed class UserController(IUserService service) : ControllerBase, IUserController {
 	[HttpGet("{id:guid}")]
 	public async Task<IValueHttpResult<UserResponseDto>> FindOne(Guid id) {
 		var user = await service.FindOne(id);
-		return user == null? TypedResults.NotFound<UserResponseDto>(null) : TypedResults.Ok(new UserResponseDto(user));
+		return user == null ? TypedResults.NotFound<UserResponseDto>(null) : TypedResults.Ok(new UserResponseDto(user));
 	}
 
 	[HttpGet("")]

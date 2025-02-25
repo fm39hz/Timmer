@@ -2,6 +2,7 @@ namespace Timmer.Api.Domain.Authorization;
 
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Constant;
 using Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using User;
 
 [ApiController]
-[Route("/api/v1/[controller]")]
+[Route(Route.DEFAULT_ROUTE)]
 public class AuthorizationController(IUserService userService, ITokenGenerator tokenGenerator) : ControllerBase {
 	[AllowAnonymous]
 	[HttpPost("login")]
