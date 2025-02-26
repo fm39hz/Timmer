@@ -24,7 +24,7 @@ public static class Program {
 		app.UseSwaggerUI();
 		app.UseAuthentication();
 		app.UseAuthorization();
-		app.UseLoggerMiddleware();
+		app.UseMiddlewareScope();
 		app.UseHttpsRedirection();
 		app.Run();
 	}
