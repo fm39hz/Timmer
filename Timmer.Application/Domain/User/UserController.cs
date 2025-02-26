@@ -1,13 +1,11 @@
 namespace Timmer.Application.Domain.User;
 
-using System.Security.Claims;
 using Constant;
 using Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Authorize(RoleConstant.ADMIN)]
 [Route(RouteConstant.CONTROLLER)]
 public sealed class UserController(IUserService service) : ControllerBase, IUserController {
 	[HttpGet("{id:guid}")]
@@ -22,6 +20,7 @@ public sealed class UserController(IUserService service) : ControllerBase, IUser
 	}
 
 	[HttpGet("")]
+	[Authorize(RoleConstant.ADMIN)]
 	public async Task<IValueHttpResult<IEnumerable<UserResponseDto>>> FindAll() {
 		var users = await service.FindAll();
 		var dtos = users.Select(user => new UserResponseDto(user)).ToList();
@@ -29,6 +28,7 @@ public sealed class UserController(IUserService service) : ControllerBase, IUser
 	}
 
 	[HttpPost("")]
+	[Authorize(RoleConstant.ADMIN)]
 	public async Task<IValueHttpResult<UserResponseDto>> Create([FromBody] UserRequestDto entity) {
 		var createdUser = await service.Create(entity.ToModel());
 		return TypedResults.Created(createdUser.Id.ToString(), new UserResponseDto(createdUser));
@@ -58,4 +58,5 @@ public sealed class UserController(IUserService service) : ControllerBase, IUser
 		var role = User.FindFirst(ClaimTypes.Role)!.Value;
 		return userId == id || role == RoleConstant.ADMIN;
 	}
+	[Authorize(RoleConstant.ADMIN)]
 }
