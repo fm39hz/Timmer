@@ -9,4 +9,8 @@ public abstract record BaseModel : IModel {
 	[Column("id")]
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 	public Guid Id { get; init; }
+
+	protected BaseModel(BaseModel model) {
+		Id = model.Id;
+	}
 }

@@ -1,17 +1,14 @@
 namespace Timmer.Application.Domain.User;
 
-using Database;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
-public sealed class UserService(UserContext context) : IUserService {
+public sealed class UserService(IUserRepository repository) : IUserService {
 	private static PasswordHasher<UserModel> PasswordHasher => new();
-	public DbSet<UserModel> Entities => context.Set<UserModel>();
 
-	public async Task<UserModel?> FindOne(Guid id) => await Entities.FirstOrDefaultAsync(user => user.Id == id);
+	public async Task<UserModel?> FindOne(Guid id) => await repository.FindOne(id);
 
 	public async Task<UserModel?> FindOne(string email, string password) {
-		var user = await Entities.FirstOrDefaultAsync(u => u.Email == email);
+		var user = await repository.FindUseWithEmail(email);
 
 		if (user == null) {
 			return null;
@@ -21,35 +18,20 @@ public sealed class UserService(UserContext context) : IUserService {
 		return isPasswordValid == PasswordVerificationResult.Failed? null : user;
 	}
 
-	public async Task<IEnumerable<UserModel>> FindAll() => await Entities.ToListAsync();
+	public async Task<IEnumerable<UserModel>> FindAll() => await repository.FindAll();
 
 	public async Task<UserModel> Create(UserModel entity) {
 		var hashedPassword = PasswordHasher.HashPassword(entity, entity.PasswordHash);
-		var result = Entities.Add(new UserModel(entity) { PasswordHash = hashedPassword });
-		await context.SaveChangesAsync();
-		return result.Entity;
+		var result = await repository.Create(new UserModel(entity) { PasswordHash = hashedPassword });
+		return result;
 	}
 
 	public async Task<UserModel> Update(Guid id, UserModel entity) {
 		var hashedPassword = PasswordHasher.HashPassword(entity, entity.PasswordHash);
 		var user = new UserModel(entity) { Id = id, PasswordHash = hashedPassword };
-		var result = Entities.Update(user);
-		await context.SaveChangesAsync();
-		return result.Entity;
+		var result = await repository.Update(user);
+		return result;
 	}
 
-	public async Task<int> Delete(Guid id) {
-		try {
-			var entity = await FindOne(id);
-			if (entity != null) {
-				Entities.Remove(entity);
-			}
-
-			return await context.SaveChangesAsync();
-		}
-		catch (DbUpdateConcurrencyException e) {
-			Console.WriteLine(e);
-			throw;
-		}
-	}
+	public async Task<int> Delete(Guid id) => await repository.Delete(id);
 }

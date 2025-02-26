@@ -7,7 +7,6 @@ using UserTask;
 
 public sealed record UserModel : BaseModel {
 	public UserModel(UserModel user) : base(user) {
-		Id = user.Id;
 		Role = user.Role;
 		Name = user.Name;
 		Email = user.Email;

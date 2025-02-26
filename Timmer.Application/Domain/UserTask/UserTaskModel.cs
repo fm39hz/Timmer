@@ -7,7 +7,6 @@ using User;
 
 public sealed record UserTaskModel : BaseModel {
 	public UserTaskModel(UserTaskModel task) : base(task) {
-		Id = task.Id;
 		Name = task.Name;
 		Description = task.Description;
 		User = task.User;

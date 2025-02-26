@@ -1,18 +1,11 @@
 namespace Timmer.Application.Contract;
 
 using Domain.Base;
-using Microsoft.EntityFrameworkCore;
 
 /// <summary>
 ///     An interface that declare Crud actions service
 /// </summary>
-public interface ICrudService<T> where T : BaseModel {
-	/// <summary>
-	///     Find all entity in database
-	/// </summary>
-	/// <returns></returns>
-	public DbSet<T> Entities { get; }
-
+public interface ICrudService<T> where T : IModel {
 	/// <summary>
 	///     Find one entity with id in database
 	/// </summary>

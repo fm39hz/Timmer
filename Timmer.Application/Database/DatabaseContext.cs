@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using MySql.EntityFrameworkCore.Extensions;
 using Utils;
 
-public sealed class UserContext : DbContext {
-	public UserContext(DbContextOptions<UserContext> options) : base(options) {
+public sealed class DatabaseContext : DbContext {
+	public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) {
 		Database.EnsureCreated();
 	}
 
@@ -41,8 +41,8 @@ public static class UserContextExtensions {
 	public static IServiceCollection AddUserContext(this IServiceCollection service, WebApplicationBuilder builder) {
 		var mariaDbConfiguration = new MariaDbConfiguration(builder.Configuration);
 		var userSeed = new UserSeedConfiguration(builder.Configuration);
-		builder.Services.AddMySQLServer<UserContext>(mariaDbConfiguration.ConnectionString);
-		service.AddDbContext<UserContext>(optionsBuilder => {
+		builder.Services.AddMySQLServer<DatabaseContext>(mariaDbConfiguration.ConnectionString);
+		service.AddDbContext<DatabaseContext>(optionsBuilder => {
 			optionsBuilder.UseSeeding((context, _) => {
 				context.Seed(userSeed);
 				context.SaveChanges();
