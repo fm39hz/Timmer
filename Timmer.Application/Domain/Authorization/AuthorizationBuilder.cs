@@ -15,8 +15,8 @@ public static class AuthorizationBuilder {
 				policy.RequireRole(RoleConstant.ADMIN);
 			})
 			.AddPolicy(RoleConstant.USER, policy => {
-				policy.RequireClaim(ClaimTypes.Role, RoleConstant.USER);
-				policy.RequireRole(RoleConstant.USER);
+				policy.RequireClaim(ClaimTypes.Role, RoleConstant.USER, RoleConstant.ADMIN);
+				policy.RequireRole(RoleConstant.USER, RoleConstant.ADMIN);
 			});
 		services.AddAuthentication()
 			.AddJwtBearer(opt => opt.TokenValidationParameters = new TokenValidationParameters {
