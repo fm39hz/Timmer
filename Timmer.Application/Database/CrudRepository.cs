@@ -4,7 +4,7 @@ using Contract;
 using Domain.Base;
 using Microsoft.EntityFrameworkCore;
 
-public abstract class CrudRepository<T>(DatabaseContext context) : IRepository<T> where T : BaseModel {
+public abstract class CrudRepository<T>(ApplicationDbContext context) : IRepository<T> where T : BaseModel {
 	protected DbSet<T> Entities => context.Set<T>();
 	public async Task<T?> FindOne(Guid id) => await Entities.FirstOrDefaultAsync(entity => entity.Id == id);
 

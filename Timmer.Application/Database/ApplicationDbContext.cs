@@ -4,18 +4,19 @@ using Configuration;
 using Constant;
 using Domain.User;
 using Domain.UserTask;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MySql.EntityFrameworkCore.Extensions;
 using Utils;
 
-public sealed class DatabaseContext : DbContext {
-	public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) {
+public sealed class ApplicationDbContext : DbContext {
+	public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {
 		Database.EnsureCreated();
 	}
 
-	private DbSet<UserModel> Users { get; set; } = null!;
-	private DbSet<UserTaskModel> Tasks { get; set; } = null!;
+	[UsedImplicitly] private DbSet<UserModel> Users { get; set; } = null!;
+	[UsedImplicitly] private DbSet<UserTaskModel> Tasks { get; set; } = null!;
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder) {
 		base.OnModelCreating(modelBuilder);
@@ -41,8 +42,8 @@ public static class UserContextExtensions {
 	public static IServiceCollection AddUserContext(this IServiceCollection service, WebApplicationBuilder builder) {
 		var mariaDbConfiguration = new MariaDbConfiguration(builder.Configuration);
 		var userSeed = new UserSeedConfiguration(builder.Configuration);
-		builder.Services.AddMySQLServer<DatabaseContext>(mariaDbConfiguration.ConnectionString);
-		service.AddDbContext<DatabaseContext>(optionsBuilder => {
+		builder.Services.AddMySQLServer<ApplicationDbContext>(mariaDbConfiguration.ConnectionString);
+		service.AddDbContext<ApplicationDbContext>(optionsBuilder => {
 			optionsBuilder.UseSeeding((context, _) => {
 				context.Seed(userSeed);
 				context.SaveChanges();
@@ -76,15 +77,17 @@ public static class UserContextExtensions {
 		});
 		context.Set<UserModel>().Add(admin);
 		var userCount = users.Count;
-		if (userCount < 50) {
-			for (var i = 0; i < 50 - userCount; i++) {
-				var userInfo = UserDataGenerator.Generate();
-				var user = new UserModel(userInfo) {
-					PasswordHash = passwordHasher.HashPassword(userInfo, userInfo.PasswordHash)
-				};
-				context.Set<UserTaskModel>().Add(UserTaskDataGenerator.Generate(user));
-				context.Set<UserModel>().Add(user);
-			}
+		if (userCount >= 50) {
+			return;
+		}
+
+		for (var i = 0; i < 50 - userCount; i++) {
+			var userInfo = UserDataGenerator.Generate();
+			var user = new UserModel(userInfo) {
+				PasswordHash = passwordHasher.HashPassword(userInfo, userInfo.PasswordHash)
+			};
+			context.Set<UserTaskModel>().Add(UserTaskDataGenerator.Generate(user));
+			context.Set<UserModel>().Add(user);
 		}
 	}
 }
