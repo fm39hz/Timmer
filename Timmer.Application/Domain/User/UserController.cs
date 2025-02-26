@@ -53,7 +53,7 @@ public sealed class UserController(IUserService service) : ControllerBase, IUser
 		return TypedResults.Ok(await service.Delete(id));
 	}
 
-	public bool ValidateScope(Guid id) {
+	private bool ValidateScope(Guid id) {
 		var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 		var role = User.FindFirst(ClaimTypes.Role)!.Value;
 		return userId == id || role == RoleConstant.ADMIN;
