@@ -8,7 +8,7 @@ public sealed class UserService(IUserRepository repository) : IUserService {
 	public async Task<UserModel?> FindOne(Guid id) => await repository.FindOne(id);
 
 	public async Task<UserModel?> FindOne(string email, string password) {
-		var user = await repository.FindUseWithEmail(email);
+		var user = await repository.FindOneByEmail(email);
 
 		if (user == null) {
 			return null;
