@@ -2,7 +2,6 @@ namespace Timmer.Api.Extension;
 
 using System.Security.Claims;
 using Application.Service.Contract;
-using Application.Service.Implementation;
 using Domain.Constant;
 using Infrastructure.Configuration;
 using Infrastructure.Identity;
