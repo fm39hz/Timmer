@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Reference Include="Bogus">
+			<HintPath>..\..\..\..\..\.nuget\packages\bogus\35.6.2\lib\net6.0\Bogus.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.EntityFrameworkCore">
+			<HintPath>..\..\..\..\..\.nuget\packages\microsoft.entityframeworkcore\9.0.2\lib\net8.0\Microsoft.EntityFrameworkCore.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Identity.Core">
+			<HintPath>..\..\..\..\..\.nuget\packages\microsoft.aspnetcore.app.ref\9.0.2\ref\net9.0\Microsoft.Extensions.Identity.Core.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Options">
+			<HintPath>..\..\..\..\..\.nuget\packages\microsoft.aspnetcore.app.ref\9.0.2\ref\net9.0\Microsoft.Extensions.Options.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.OpenApi">
+			<HintPath>..\..\..\..\..\.nuget\packages\microsoft.openapi\1.6.22\lib\netstandard2.0\Microsoft.OpenApi.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Timmer.Data\Timmer.Data.csproj"/>
+		<ProjectReference Include="..\Timmer.Domain\Timmer.Domain.csproj"/>
+		<ProjectReference Include="..\Timmer.Common\Timmer.Common.csproj"/>
+	</ItemGroup>
+
+</Project>

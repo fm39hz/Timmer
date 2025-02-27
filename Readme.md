@@ -16,6 +16,6 @@
     cd Timmer
     ```
 
-- Edit secret in `Timmer.Api/config.json`
-- Expose the secret into assembly: `Timmer.Api/secret_expose.sh`
+- Edit secret in `config.json`
+- Expose the secret into assembly: `bash secret_expose.sh`
 - Start project: `dotnet run`
