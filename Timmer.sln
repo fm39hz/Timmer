@@ -4,14 +4,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timmer.Api", "src\Timmer.Ap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timmer.Infrastructure", "src\Timmer.Infrastructure\Timmer.Infrastructure.csproj", "{6856C0AA-027F-4BBF-BA5A-A690FFF8758D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timmer.Domain", "src\Timmer.Domain\Timmer.Domain.csproj", "{9F5956B9-FA64-4168-B748-00854C375B81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timmer.Application", "src\Timmer.Application\Timmer.Application.csproj", "{A4D341AE-EA0A-4241-A6AE-E91853783F3E}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FD824F87-F2C2-4A19-8DB7-DF0CAAB9EED5}"
 	ProjectSection(SolutionItems) = preProject
 		compose.yaml = compose.yaml
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timmer.Domain", "src\Timmer.Domain\Timmer.Domain.csproj", "{9F5956B9-FA64-4168-B748-00854C375B81}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timmer.Application", "src\Timmer.Application\Timmer.Application.csproj", "{A4D341AE-EA0A-4241-A6AE-E91853783F3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
