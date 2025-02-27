@@ -1,8 +1,8 @@
 namespace Timmer.Api.Middleware;
 
 using System.Security.Claims;
-using Common.Constant;
-using Timmer.Domain.User;
+using Controller.User;
+using Domain.Constant;
 
 public class UserValidationMiddleware(RequestDelegate next) {
 	private static readonly Action<ILogger, Guid, Exception?> _dUserIdDenial =

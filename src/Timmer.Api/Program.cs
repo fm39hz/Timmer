@@ -1,10 +1,8 @@
 namespace Timmer.Api;
 
-using Common.Constant;
-using Domain.Authorization;
+using Domain.Constant;
 using Extension;
 using Microsoft.OpenApi.Models;
-using Middleware;
 
 public static class Program {
 	public static void Main(string[] args) {

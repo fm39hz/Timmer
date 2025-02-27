@@ -1,8 +1,10 @@
 namespace Timmer.Api.Extension;
 
-using Infrastructure.User;
+using Application.Service.Contract;
+using Application.Service.Implementation;
+using Domain.Common.Repository;
+using Infrastructure.Persistence.Repository;
 using JetBrains.Annotations;
-using Timmer.Domain.User;
 
 public static class ServiceExtension {
 	[UsedImplicitly]

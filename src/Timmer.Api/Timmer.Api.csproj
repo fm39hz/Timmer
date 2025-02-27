@@ -10,7 +10,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Bogus" Version="35.6.2"/>
-		<PackageReference Include="EFCore.NamingConventions" Version="9.0.0" />
+		<PackageReference Include="EFCore.NamingConventions" Version="9.0.0"/>
 		<PackageReference Include="Google.Apis.Calendar.v3" Version="1.69.0.3667"/>
 		<PackageReference Include="Google.Maps.AddressValidation.V1" Version="1.4.0"/>
 		<PackageReference Include="Google.Maps.RouteOptimization.V1" Version="1.2.0"/>
@@ -38,9 +38,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Timmer.Data\Timmer.Data.csproj"/>
-		<ProjectReference Include="..\Timmer.Domain\Timmer.Domain.csproj"/>
-		<ProjectReference Include="..\Timmer.Common\Timmer.Common.csproj"/>
+		<ProjectReference Include="..\Timmer.Application\Timmer.Application.csproj"/>
 		<ProjectReference Include="..\Timmer.Infrastructure\Timmer.Infrastructure.csproj"/>
 	</ItemGroup>
 

@@ -1,20 +1,21 @@
 namespace Timmer.Api.Extension;
 
-using Common.Constant;
-using Configuration;
-using Data.Database;
-using Infrastructure.User;
-using Infrastructure.UserTask;
+using Domain.Constant;
+using Domain.Entity.User;
+using Domain.Entity.UserTask;
+using Infrastructure.Configuration;
+using Infrastructure.DataGenerator.User;
+using Infrastructure.DataGenerator.UserTask;
+using Infrastructure.Persistence.Database;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MySql.EntityFrameworkCore.Extensions;
-using Timmer.Domain.User;
-using Timmer.Domain.UserTask;
 
 public static class DatabaseContextExtension {
 	[UsedImplicitly]
-	public static IServiceCollection AddDatabaseContext(this IServiceCollection service, WebApplicationBuilder builder) {
+	public static IServiceCollection
+		AddDatabaseContext(this IServiceCollection service, WebApplicationBuilder builder) {
 		var mariaDbConfiguration = new MariaDbConfiguration(builder.Configuration);
 		var userSeed = new UserSeedConfiguration(builder.Configuration);
 		builder.Services.AddMySQLServer<ApplicationDbContext>(mariaDbConfiguration.ConnectionString);

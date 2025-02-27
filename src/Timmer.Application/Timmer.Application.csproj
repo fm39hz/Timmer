@@ -7,15 +7,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Reference Include="Bogus">
-			<HintPath>..\..\..\..\..\.nuget\packages\bogus\35.6.2\lib\net6.0\Bogus.dll</HintPath>
-		</Reference>
-		<Reference Include="JetBrains.Annotations">
-			<HintPath>..\..\..\..\..\.nuget\packages\jetbrains.annotations\2024.3.0\lib\netstandard2.0\JetBrains.Annotations.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.EntityFrameworkCore">
-			<HintPath>..\..\..\..\..\.nuget\packages\microsoft.entityframeworkcore\9.0.2\lib\net8.0\Microsoft.EntityFrameworkCore.dll</HintPath>
-		</Reference>
+		<ProjectReference Include="..\Timmer.Domain\Timmer.Domain.csproj"/>
+		<ProjectReference Include="..\Timmer.Infrastructure\Timmer.Infrastructure.csproj"/>
+	</ItemGroup>
+
+	<ItemGroup>
 		<Reference Include="Microsoft.Extensions.Configuration.Abstractions">
 			<HintPath>..\..\..\..\..\.nuget\packages\microsoft.aspnetcore.app.ref\9.0.2\ref\net9.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
 		</Reference>
@@ -25,13 +21,15 @@
 		<Reference Include="Microsoft.Extensions.Options">
 			<HintPath>..\..\..\..\..\.nuget\packages\microsoft.aspnetcore.app.ref\9.0.2\ref\net9.0\Microsoft.Extensions.Options.dll</HintPath>
 		</Reference>
+		<Reference Include="Microsoft.IdentityModel.Tokens">
+			<HintPath>..\..\..\..\..\.nuget\packages\microsoft.identitymodel.tokens\8.0.1\lib\net9.0\Microsoft.IdentityModel.Tokens.dll</HintPath>
+		</Reference>
 		<Reference Include="Microsoft.OpenApi">
 			<HintPath>..\..\..\..\..\.nuget\packages\microsoft.openapi\1.6.22\lib\netstandard2.0\Microsoft.OpenApi.dll</HintPath>
 		</Reference>
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\Timmer.Domain\Timmer.Domain.csproj"/>
+		<Reference Include="System.IdentityModel.Tokens.Jwt">
+			<HintPath>..\..\..\..\..\.nuget\packages\system.identitymodel.tokens.jwt\8.0.1\lib\net9.0\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+		</Reference>
 	</ItemGroup>
 
 </Project>

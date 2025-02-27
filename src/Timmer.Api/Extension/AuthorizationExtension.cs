@@ -1,9 +1,10 @@
 namespace Timmer.Api.Extension;
 
 using System.Security.Claims;
-using Common.Constant;
-using Configuration;
-using Domain.Authorization;
+using Application.Service.Contract;
+using Application.Service.Implementation;
+using Domain.Constant;
+using Infrastructure.Configuration;
 using JetBrains.Annotations;
 using Microsoft.IdentityModel.Tokens;
 
