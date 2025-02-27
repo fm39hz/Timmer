@@ -5,6 +5,7 @@ using Application.Service.Contract;
 using Application.Service.Implementation;
 using Domain.Constant;
 using Infrastructure.Configuration;
+using Infrastructure.Identity;
 using JetBrains.Annotations;
 using Microsoft.IdentityModel.Tokens;
 

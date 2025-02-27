@@ -25,12 +25,19 @@
 		<Reference Include="Microsoft.Extensions.Options">
 			<HintPath>..\..\..\..\..\.nuget\packages\microsoft.aspnetcore.app.ref\9.0.2\ref\net9.0\Microsoft.Extensions.Options.dll</HintPath>
 		</Reference>
+		<Reference Include="Microsoft.IdentityModel.Tokens">
+		  <HintPath>..\..\..\..\..\.nuget\packages\microsoft.identitymodel.tokens\8.0.1\lib\net9.0\Microsoft.IdentityModel.Tokens.dll</HintPath>
+		</Reference>
 		<Reference Include="Microsoft.OpenApi">
 			<HintPath>..\..\..\..\..\.nuget\packages\microsoft.openapi\1.6.22\lib\netstandard2.0\Microsoft.OpenApi.dll</HintPath>
+		</Reference>
+		<Reference Include="System.IdentityModel.Tokens.Jwt">
+		  <HintPath>..\..\..\..\..\.nuget\packages\system.identitymodel.tokens.jwt\8.0.1\lib\net9.0\System.IdentityModel.Tokens.Jwt.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Timmer.Application\Timmer.Application.csproj" />
 		<ProjectReference Include="..\Timmer.Domain\Timmer.Domain.csproj"/>
 	</ItemGroup>
 

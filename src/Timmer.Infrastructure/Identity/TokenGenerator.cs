@@ -1,11 +1,11 @@
-namespace Timmer.Application.Service.Implementation;
+namespace Timmer.Infrastructure.Identity;
 
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Contract;
+using Application.Dto.Authorization;
+using Application.Service.Contract;
+using Configuration;
 using Domain.Entity.User;
-using Dto.Authorization;
-using Infrastructure.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Extensions;
