@@ -1,11 +1,14 @@
-namespace Timmer.Api.Domain.Authorization;
+namespace Timmer.Api.Extension;
 
 using System.Security.Claims;
 using Common.Constant;
 using Configuration;
+using Domain.Authorization;
+using JetBrains.Annotations;
 using Microsoft.IdentityModel.Tokens;
 
-public static class AuthorizationBuilder {
+public static class AuthorizationExtension {
+	[UsedImplicitly]
 	public static IServiceCollection AddJwt(this IServiceCollection services, IConfiguration configuration) {
 		var jwtConfiguration = new JwtConfiguration(configuration);
 		services.AddSingleton<ITokenGenerator, TokenGenerator>();

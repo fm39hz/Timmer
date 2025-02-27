@@ -5,6 +5,7 @@ using Configuration;
 using Data.Database;
 using Infrastructure.User;
 using Infrastructure.UserTask;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MySql.EntityFrameworkCore.Extensions;
@@ -12,6 +13,7 @@ using Timmer.Domain.User;
 using Timmer.Domain.UserTask;
 
 public static class UserContextExtensions {
+	[UsedImplicitly]
 	public static IServiceCollection AddUserContext(this IServiceCollection service, WebApplicationBuilder builder) {
 		var mariaDbConfiguration = new MariaDbConfiguration(builder.Configuration);
 		var userSeed = new UserSeedConfiguration(builder.Configuration);
