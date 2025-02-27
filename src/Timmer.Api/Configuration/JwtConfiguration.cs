@@ -7,7 +7,7 @@ public sealed record JwtConfiguration {
 		ValidIssuer = configuration["Jwt:Issuer"]!;
 	}
 
-	public byte[] Key { get; set; }
-	public string ValidAudience { get; set; }
-	public string ValidIssuer { get; set; }
+	public byte[] Key { get; }
+	public string ValidAudience { get; }
+	public string ValidIssuer { get; }
 }
