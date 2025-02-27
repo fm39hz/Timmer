@@ -12,13 +12,14 @@ using MySql.EntityFrameworkCore.Extensions;
 using Timmer.Domain.User;
 using Timmer.Domain.UserTask;
 
-public static class UserContextExtensions {
+public static class DatabaseContextExtension {
 	[UsedImplicitly]
-	public static IServiceCollection AddUserContext(this IServiceCollection service, WebApplicationBuilder builder) {
+	public static IServiceCollection AddDatabaseContext(this IServiceCollection service, WebApplicationBuilder builder) {
 		var mariaDbConfiguration = new MariaDbConfiguration(builder.Configuration);
 		var userSeed = new UserSeedConfiguration(builder.Configuration);
 		builder.Services.AddMySQLServer<ApplicationDbContext>(mariaDbConfiguration.ConnectionString);
 		service.AddDbContext<ApplicationDbContext>(optionsBuilder => {
+			optionsBuilder.UseMySQL().UseSnakeCaseNamingConvention();
 			optionsBuilder.UseSeeding((context, _) => {
 				Seed(context, userSeed);
 				context.SaveChanges();

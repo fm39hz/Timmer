@@ -36,7 +36,7 @@ public static class Program {
 				"Microsoft.EntityFrameworkCore.Database.Command",
 				LogLevel.Warning)
 			);
-		builder.Services.AddUserContext(builder);
+		builder.Services.AddDatabaseContext(builder);
 		builder.Services.AddEndpointsApiExplorer();
 		builder.Services.AddControllers();
 		builder.Services.AddMvc();

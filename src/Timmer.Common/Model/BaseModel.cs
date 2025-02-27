@@ -10,7 +10,6 @@ public abstract record BaseModel : IModel {
 		Id = model.Id;
 	}
 
-	[Column("id")]
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 	public Guid Id { get; init; }
 }
