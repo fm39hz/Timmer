@@ -25,7 +25,8 @@ public static class Program {
 		app.MapControllers();
 		app.UseSwagger();
 		app.UseSwaggerUI(opt => {
-			opt.ConfigObject.AdditionalItems.Add("persistAuthorization", "true");
+			opt.ConfigObject.PersistAuthorization = true;
+			opt.DisplayRequestDuration();
 		});
 		app.UseAuthentication();
 		app.UseAuthorization();
