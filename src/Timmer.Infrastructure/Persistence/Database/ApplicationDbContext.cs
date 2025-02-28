@@ -5,11 +5,7 @@ using Domain.Entity.UserTask;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
-public sealed class ApplicationDbContext : DbContext {
-	public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {
-		Database.EnsureCreated();
-	}
-
+public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options) {
 	[UsedImplicitly] private DbSet<UserModel> Users { get; set; } = null!;
 	[UsedImplicitly] private DbSet<UserTaskModel> Tasks { get; set; } = null!;
 }

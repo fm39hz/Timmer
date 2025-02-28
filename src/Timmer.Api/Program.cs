@@ -2,10 +2,11 @@ namespace Timmer.Api;
 
 using Domain.Constant;
 using Extension;
+using Infrastructure.Persistence.Database;
 using Microsoft.OpenApi.Models;
 
 public static class Program {
-	public static void Main(string[] args) {
+	public static async Task Main(string[] args) {
 		var builder = WebApplication.CreateBuilder(args);
 		var app = Build(builder);
 		if (app.Environment.IsDevelopment()) {
@@ -14,6 +15,11 @@ public static class Program {
 			app.UseExceptionHandler(new ExceptionHandlerOptions {
 				AllowStatusCode404Response = true, ExceptionHandlingPath = "/error"
 			});
+			{
+				await using var scope = app.Services.CreateAsyncScope();
+				await using var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+				await dbContext.Database.EnsureCreatedAsync();
+			}
 		}
 
 		app.MapControllers();
@@ -25,7 +31,7 @@ public static class Program {
 		app.UseAuthorization();
 		app.UseMiddlewareScope();
 		app.UseHttpsRedirection();
-		app.Run();
+		await app.RunAsync();
 	}
 
 	private static WebApplication Build(WebApplicationBuilder builder) {
