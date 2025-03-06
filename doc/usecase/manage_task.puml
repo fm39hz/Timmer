@@ -1,0 +1,23 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor User
+actor SugestionSystem
+!include crud.puml
+
+rectangle "Task Management System" {
+  note "System analyzes schedule\nand location to provide\noptimal suggestions" as note1
+
+  usecase "Complete Task" as CompleteTask
+  usecase "Suggest schedule" as SuggestSchedule
+  usecase "Accept or Reject Suggestion" as AcceptReject
+
+  SugestionSystem --> SuggestSchedule
+  AcceptReject --> SuggestSchedule : <<include>>
+  User --> AcceptReject : <<review>>
+  User --> CompleteTask : <<update>>
+
+  CRUD(User, "Task")
+}
+@enduml

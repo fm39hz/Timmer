@@ -1,0 +1,16 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor User
+actor Admin
+
+rectangle "Personal Task Management System" {
+  usecase "Task Management" as ManageTask
+  usecase "Crud Actions" as CRUD
+  ManageTask --> CRUD : <<include>>
+  User --> ManageTask
+  Admin --> ManageTask
+}
+
+@enduml

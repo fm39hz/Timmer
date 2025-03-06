@@ -1,0 +1,13 @@
+@startuml
+!procedure CRUD($actor, $entity)
+  usecase "Create $entity" as Create
+  usecase "Read $entity" as Read
+  usecase "Update $entity" as Update
+  usecase "Delete $entity" as Delete
+
+  $actor --> Create : <<create>>
+  $actor --> Read : <<read>>
+  $actor --> Update : <<update>>
+  $actor --> Delete : <<delete>>
+!endprocedure
+@enduml

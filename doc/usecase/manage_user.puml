@@ -1,0 +1,16 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor Admin
+actor User
+!include crud.puml
+
+rectangle "User Management System" {
+	usecase "Change Self Password" as ChangePassword
+	User --> ChangePassword : <<update>>
+	Admin --> ChangePassword : <<update>>
+	CRUD(Admin, "User")
+}
+
+@enduml
