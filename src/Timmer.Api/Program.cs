@@ -4,6 +4,8 @@ using Domain.Constant;
 using Extension;
 using Infrastructure.Persistence.Database;
 using Microsoft.OpenApi.Models;
+using Scalar.AspNetCore;
+using static Timmer.Api.Extension.AuthorizationExtension;
 
 public static class Program {
 	public static async Task Main(string[] args) {
@@ -13,21 +15,23 @@ public static class Program {
 			app.UseHsts();
 			app.MapOpenApi();
 			app.UseExceptionHandler(new ExceptionHandlerOptions {
-				AllowStatusCode404Response = true, ExceptionHandlingPath = "/error"
+				AllowStatusCode404Response = true,
+				ExceptionHandlingPath = "/error"
 			});
 			{
 				await using var scope = app.Services.CreateAsyncScope();
 				await using var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 				await dbContext.Database.EnsureCreatedAsync();
 			}
-		}
 
+			app.UseSwagger();
+			app.MapScalarApiReference(static opt => opt.Title = "Timmer API");
+			app.UseSwaggerUI(static opt => {
+				opt.ConfigObject.PersistAuthorization = true;
+				opt.DisplayRequestDuration();
+			});
+		}
 		app.MapControllers();
-		app.UseSwagger();
-		app.UseSwaggerUI(opt => {
-			opt.ConfigObject.PersistAuthorization = true;
-			opt.DisplayRequestDuration();
-		});
 		app.UseAuthentication();
 		app.UseAuthorization();
 		app.UseMiddlewareScope();
@@ -36,7 +40,7 @@ public static class Program {
 	}
 
 	private static WebApplication Build(WebApplicationBuilder builder) {
-		builder.Services.AddOpenApi();
+		builder.Services.AddOpenApi(static options => options.AddDocumentTransformer<BearerSecuritySchemeTransformer>());
 		builder.Services.AddLogging(static logging => logging.AddFilter(
 				"Microsoft.EntityFrameworkCore.Database.Command",
 				LogLevel.Warning)
