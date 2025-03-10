@@ -25,10 +25,14 @@ public static class Program {
 			}
 
 			app.UseSwagger();
-			app.MapScalarApiReference(static opt => opt.Title = "Timmer API");
 			app.UseSwaggerUI(static opt => {
+				opt.SwaggerEndpoint("/openapi/v1.json", "v1");
 				opt.ConfigObject.PersistAuthorization = true;
 				opt.DisplayRequestDuration();
+			});
+			app.MapScalarApiReference(static opt => {
+				opt.Theme = ScalarTheme.DeepSpace;
+				opt.Title = "Timmer API";
 			});
 		}
 		app.MapControllers();
