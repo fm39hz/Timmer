@@ -26,13 +26,9 @@ public static class DatabaseContextExtension {
 			optionsBuilder.UseMySQL().UseSnakeCaseNamingConvention();
 			var seeders = new List<ISeeder> { new AdminSeeder(userSeed), new UserSeeder() };
 			var databaseSeeder = new DatabaseSeeder(seeders);
-			optionsBuilder.UseSeeding((context, _) => {
-				databaseSeeder.SeedAll(context);
-			});
+			optionsBuilder.UseSeeding((context, _) => databaseSeeder.SeedAll(context));
 
-			optionsBuilder.UseAsyncSeeding(async (context, _, cancellationToken) => {
-				await databaseSeeder.SeedAllAsync(context, cancellationToken);
-			});
+			optionsBuilder.UseAsyncSeeding(async (context, _, cancellationToken) => await databaseSeeder.SeedAllAsync(context, cancellationToken));
 		});
 
 		return service;

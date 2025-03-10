@@ -54,7 +54,8 @@ public class AdminSeeder(UserSeedConfiguration userSeedConfiguration) : ISeeder 
 		var passwordHasher = new PasswordHasher<UserModel>();
 
 		var admin = new UserModel(adminInfo) {
-			Role = Roles.Admin, PasswordHash = passwordHasher.HashPassword(adminInfo, userSeedConfiguration.Password)
+			Role = Roles.Admin,
+			PasswordHash = passwordHasher.HashPassword(adminInfo, userSeedConfiguration.Password)
 		};
 
 		context.Set<UserTaskModel>().Add(UserTaskDataGenerator.Generate(admin));

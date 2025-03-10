@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 public sealed record JwtConfiguration {
 	public JwtConfiguration(IConfiguration configuration) {
-		Key = configuration["Jwt:Secret"]!.Select(Convert.ToByte).ToArray();
+		Key = [.. configuration["Jwt:Secret"]!.Select(Convert.ToByte)];
 		ValidAudience = configuration["Jwt:Audience"]!;
 		ValidIssuer = configuration["Jwt:Issuer"]!;
 	}

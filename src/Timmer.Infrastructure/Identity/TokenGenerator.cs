@@ -11,7 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Extensions;
 
 public class TokenGenerator(IConfiguration configuration) : ITokenGenerator {
-	public TokenDto GenerateToken(UserModel user, bool isRefreshToken) => GenerateToken(user, isRefreshToken? 7 : 1);
+	public TokenDto GenerateToken(UserModel user, bool isRefreshToken) => GenerateToken(user, isRefreshToken ? 7 : 1);
 
 	private TokenDto GenerateToken(UserModel user, int expiresIn) {
 		var tokenHandler = new JwtSecurityTokenHandler();

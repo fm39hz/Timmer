@@ -18,7 +18,7 @@ public sealed class UserService(IUserRepository repository) : IUserService {
 		}
 
 		var isPasswordValid = PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
-		return isPasswordValid == PasswordVerificationResult.Failed? null : user;
+		return isPasswordValid == PasswordVerificationResult.Failed ? null : user;
 	}
 
 	public async Task<IEnumerable<UserModel>> FindAll() => await repository.FindAll();

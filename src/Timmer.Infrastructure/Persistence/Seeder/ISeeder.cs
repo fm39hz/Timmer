@@ -3,6 +3,6 @@ namespace Timmer.Infrastructure.Persistence.Seeder;
 using Microsoft.EntityFrameworkCore;
 
 public interface ISeeder {
-    bool SeedData(DbContext context);
-    Task<bool> SeedDataAsync(DbContext context, CancellationToken cancellationToken = default);
+	public bool SeedData(DbContext context);
+	public Task<bool> SeedDataAsync(DbContext context, CancellationToken cancellationToken = default);
 }
