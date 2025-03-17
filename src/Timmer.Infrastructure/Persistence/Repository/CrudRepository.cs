@@ -22,6 +22,12 @@ public abstract class CrudRepository<T>(DbContext context) : IRepository<T> wher
 		return result.Entity;
 	}
 
+	public async Task<IEnumerable<T>> Update(IEnumerable<T> entities) {
+		Entities.UpdateRange(entities);
+		await context.SaveChangesAsync();
+		return context.Set<T>().Where(entity => entities.Select(e => e.Id).Contains(entity.Id));
+	}
+
 	public async Task<int> Delete(Guid id) {
 		try {
 			var entity = await FindOne(id);
