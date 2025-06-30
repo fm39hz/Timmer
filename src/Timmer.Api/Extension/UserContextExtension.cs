@@ -24,11 +24,10 @@ public static class DatabaseContextExtension {
 
 		service.AddDbContext<ApplicationDbContext>(optionsBuilder => {
 			optionsBuilder.UseMySQL().UseSnakeCaseNamingConvention();
-			var seeders = new List<ISeeder> { new AdminSeeder(userSeed), new UserSeeder() };
+			var seeders = new List<ISeeder> { new AminSeeder(userSeed), new UserSeeder() };
 			var databaseSeeder = new DatabaseSeeder(seeders);
-			optionsBuilder.UseSeeding((context, _) => databaseSeeder.SeedAll(context));
-
-			optionsBuilder.UseAsyncSeeding(async (context, _, cancellationToken) => await databaseSeeder.SeedAllAsync(context, cancellationToken));
+			optionsBuilder.UseSeeding((context, _) => databaseSeeder.SeedAll(context))
+				.UseAsyncSeeding(async (context, _, cancellationToken) => await databaseSeeder.SeedAllAsync(context, cancellationToken));
 		});
 
 		return service;
